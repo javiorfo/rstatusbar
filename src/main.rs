@@ -12,7 +12,7 @@ fn main() {
     let result1_cache = Arc::new(Mutex::new(String::new()));
     let result2_cache = Arc::new(Mutex::new(String::new()));
 
-    process(result1_cache.clone(), Duration::from_secs(200), cpu_usage);
+    process(result1_cache.clone(), Duration::from_millis(500), cpu_usage);
     process(result2_cache.clone(), Duration::from_millis(500), temperature);
 
     statusbar(vec![result1_cache, result2_cache]);
@@ -22,7 +22,7 @@ fn process<F>(cache: Arc<Mutex<String>>, duration: Duration, fun: F)
 where
     F: Fn(&mut System) -> Component + Send + 'static,
 {
-    let mut sys = System::new();
+    let mut sys = System::new_all();
     thread::spawn(move || loop {
         let result = format!("{}", fun(&mut sys));
         *cache.clone().lock().unwrap() = result;
@@ -44,7 +44,7 @@ fn statusbar(list: Vec<Arc<Mutex<String>>>) {
     }
 }
 
-fn temperature(_sys: &mut System) -> Component {
+fn temperature(_: &mut System) -> Component {
     let components = Components::new_with_refreshed_list();
     let total = components.iter().map(|c| c.temperature()).sum::<f32>();
     let total = total as usize / components.len();
@@ -60,15 +60,13 @@ fn temperature(_sys: &mut System) -> Component {
 fn cpu_usage(sys: &mut System) -> Component {
     sys.refresh_cpu_usage();
 //     let l = sys.cpus().len();
-//     let total = sys.cpus().len();
 //     let total = sys.cpus().iter().map(|v| v.cpu_usage()).sum::<f32>() as usize / l;
-//     let total = sys.cpus().iter().map(|v| v.cpu_usage()).sum::<f32>();
-    let total = sys.global_cpu_info().cpu_usage();
+    let total = sys.global_cpu_info().cpu_usage() as usize;
     let total = format!("{}%", total);
+
     Component {
         name: Some("CPU".to_string()),
         icon: Some("󰏈 ".to_string()),
         value: total,
     }
-    //     format!("󰏈  TEMP {}󰔄 ", &total.to_string())
 }
