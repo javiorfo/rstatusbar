@@ -11,11 +11,13 @@ mod component;
 fn main() {
     let result1_cache = Arc::new(Mutex::new(String::new()));
     let result2_cache = Arc::new(Mutex::new(String::new()));
+    let result3_cache = Arc::new(Mutex::new(String::new()));
 
     process(result1_cache.clone(), Duration::from_millis(500), cpu_usage);
-    process(result2_cache.clone(), Duration::from_millis(500), temperature);
+    process(result2_cache.clone(), Duration::from_millis(500), memory_usage);
+    process(result3_cache.clone(), Duration::from_millis(500), temperature);
 
-    statusbar(vec![result1_cache, result2_cache]);
+    statusbar(vec![result1_cache, result2_cache, result3_cache]);
 }
 
 fn process<F>(cache: Arc<Mutex<String>>, duration: Duration, fun: F)
@@ -54,19 +56,27 @@ fn temperature(_: &mut System) -> Component {
         icon: Some("󰏈 ".to_string()),
         value: total,
     }
-    //     format!("󰏈  TEMP {}󰔄 ", &total.to_string())
 }
 
 fn cpu_usage(sys: &mut System) -> Component {
     sys.refresh_cpu_usage();
-//     let l = sys.cpus().len();
-//     let total = sys.cpus().iter().map(|v| v.cpu_usage()).sum::<f32>() as usize / l;
     let total = sys.global_cpu_info().cpu_usage() as usize;
     let total = format!("{}%", total);
 
     Component {
         name: Some("CPU".to_string()),
         icon: Some("󰏈 ".to_string()),
+        value: total,
+    }
+}
+
+fn memory_usage(sys: &mut System) -> Component {
+    sys.refresh_memory();
+    let memory_perc = (sys.used_memory() as f32 / sys.total_memory() as f32) * 100.0;
+    let total = format!("{:.0}%", memory_perc);
+    Component {
+        name: Some("RAM".to_string()),
+        icon: Some(" ".to_string()),
         value: total,
     }
 }
