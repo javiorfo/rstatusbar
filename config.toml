@@ -12,39 +12,41 @@ name = "RAM"
 icon = " "
 
 [temperature]
-time = 100
+time = 1000
 name = "TEMP"
 icon = "󰏈 " 
 
 [disk]
-time = 1000
+time = 2000
 name = "DISK"
 icon = "󰋊 "
 
 [volume]
-time = 10
+time = 100
 name = "VOL"
 icon_active = " " 
 icon_muted = "󰖁 " 
 
 [network]
-time = 10000
+time = 5000
 name_eth = "ETH"
 name_wifi = "WIFI"
 icon_up = "󰀂 " 
 icon_down = "󰯡 " 
 
 [battery]
-time = 10000
+time = 5000
 name = "BAT"
 icon_full = "󰁹" 
 icon_medium = "󰁿" 
 icon_low = "󰁺" 
 
 [date]
-time = 10000
+time = 1000
 format = "day dd/MM/yyyy hh:mm"
 icon = " "
+
+[bluetooth]
 
 [weather]
 

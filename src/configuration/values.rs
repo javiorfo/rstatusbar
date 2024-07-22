@@ -6,6 +6,7 @@ use toml::from_str;
 pub struct Config {
     pub cpu: Option<Cpu>,
     pub ram: Option<Ram>,
+    pub disk: Option<Disk>,
     pub temperature: Option<Temperature>,
 }
 
@@ -25,6 +26,13 @@ pub struct Temperature {
 
 #[derive(Deserialize, Debug)]
 pub struct Ram {
+    pub time: Option<u64>,
+    pub name: Option<String>,
+    pub icon: Option<String>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Disk {
     pub time: Option<u64>,
     pub name: Option<String>,
     pub icon: Option<String>,

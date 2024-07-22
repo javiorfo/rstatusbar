@@ -68,6 +68,25 @@ fn main() {
         );
         values.push(cache);
     }
+    
+    if let Some(ref disk) = config.disk {
+        let icon: &'static str =
+            Box::leak(disk.icon.clone().unwrap_or("".to_string()).into_boxed_str());
+        let name: &'static str =
+            Box::leak(disk.name.clone().unwrap_or("".to_string()).into_boxed_str());
+        let duration = disk.time.unwrap_or(500);
+        let cache = Arc::new(Mutex::new(String::new()));
+        process(
+            cache.clone(),
+            Duration::from_millis(duration),
+            disk_perc_usage(Component {
+                icon,
+                name,
+                value: "".to_string(),
+            }),
+        );
+        values.push(cache);
+    }
 
     statusbar(values);
 }
