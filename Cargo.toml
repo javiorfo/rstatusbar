@@ -8,3 +8,4 @@ sysinfo = { version = "0.30.11", default-features = false }
 toml = "0.8.12"
 serde = { version = "1.0.197", features = [ "derive" ] }
 anyhow = { version = "1.0.86", default-features = false }
+alsa = "0.9"

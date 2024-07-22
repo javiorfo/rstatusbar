@@ -3,10 +3,10 @@ use std::thread;
 use std::time::Duration;
 
 use component::section::Component;
-use config::configuration::get_configuration;
+use configuration::values::get_configuration;
 use sysinfo::{Components, System};
 mod component;
-mod config;
+mod configuration;
 
 fn main() {
     let config = get_configuration();
@@ -137,3 +137,74 @@ fn cpu_perc_usage(comp: Component<'static>) -> impl Fn(&mut System) -> Component
         }
     }
 }
+
+fn disk_perc_usage(comp: Component<'static>) -> impl Fn(&mut System) -> Component {
+    move |sys: &mut System| {
+        sys.refresh_cpu_usage();
+        let total = sys.global_cpu_info().cpu_usage() as usize;
+        let total = format!("{}%", total);
+        Component {
+            name: comp.name,
+            icon: comp.icon,
+            value: total,
+        }
+    }
+}
+
+fn volume(comp: Component<'static>) -> impl Fn(&mut System) -> Component {
+    move |_| {
+        let components = Components::new_with_refreshed_list();
+        let total = components.iter().map(|c| c.temperature()).sum::<f32>();
+        let total = total as usize / components.len();
+        let total = format!("{}󰔄 ", total);
+        Component {
+            name: comp.name,
+            icon: comp.icon,
+            value: total,
+        }
+    }
+}
+
+fn network(comp: Component<'static>) -> impl Fn(&mut System) -> Component {
+    move |_| {
+        let components = Components::new_with_refreshed_list();
+        let total = components.iter().map(|c| c.temperature()).sum::<f32>();
+        let total = total as usize / components.len();
+        let total = format!("{}󰔄 ", total);
+        Component {
+            name: comp.name,
+            icon: comp.icon,
+            value: total,
+        }
+    }
+}
+
+fn date(comp: Component<'static>) -> impl Fn(&mut System) -> Component {
+    move |_| {
+        let components = Components::new_with_refreshed_list();
+        let total = components.iter().map(|c| c.temperature()).sum::<f32>();
+        let total = total as usize / components.len();
+        let total = format!("{}󰔄 ", total);
+        Component {
+            name: comp.name,
+            icon: comp.icon,
+            value: total,
+        }
+    }
+}
+
+
+fn battery_perc_usage(comp: Component<'static>) -> impl Fn(&mut System) -> Component {
+    move |_| {
+        let components = Components::new_with_refreshed_list();
+        let total = components.iter().map(|c| c.temperature()).sum::<f32>();
+        let total = total as usize / components.len();
+        let total = format!("{}󰔄 ", total);
+        Component {
+            name: comp.name,
+            icon: comp.icon,
+            value: total,
+        }
+    }
+}
+
