@@ -20,6 +20,7 @@ icon = "󰏈 "
 time = 2000
 name = "DISK"
 icon = "󰋊 "
+unit = "/"
 
 [volume]
 time = 100

@@ -28,6 +28,7 @@ pub fn obtain() -> Vec<Box<dyn Converter>> {
         time: Some(500),
         name: Some("DISK".to_string()),
         icon: Some("".to_string()),
+        unit: Some("/".to_string()),
     })),
     Box::new(config.cpu.unwrap_or(Cpu {
         time: Some(500),
