@@ -6,12 +6,6 @@ pub struct Component<'a> {
     pub value: String,
 }
 
-pub trait Carlo {
-
-}
-
-impl Carlo for Component<'_> {}
-
 impl Display for Component<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, " {} {} {} ", self.icon, self.name, self.value)
