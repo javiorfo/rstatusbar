@@ -30,8 +30,7 @@ icon_muted = "󰖁 "
 
 [network]
 time = 5000
-name_eth = "ETH"
-name_wifi = "WIFI"
+name = "NET"
 icon_up = "󰀂 " 
 icon_down = "󰯡 " 
 

@@ -3,6 +3,7 @@ use std::fs;
 use toml::from_str;
 
 use super::components::general::General;
+use super::components::network::Network;
 use super::components::volume::Volume;
 use super::components::{cpu::Cpu, disk::Disk, memory::Memory, temperature::Temperature};
 use super::converter::Converter;
@@ -15,6 +16,7 @@ struct Config {
     pub disk: Option<Disk>,
     pub temperature: Option<Temperature>,
     pub volume: Option<Volume>,
+    pub network: Option<Network>,
 }
 
 pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
@@ -45,6 +47,9 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
         if config.volume.is_some() {
             values.push(Box::new(config.volume.unwrap()));
         }
+        if config.network.is_some() {
+            values.push(Box::new(config.network.unwrap()));
+        }
 
         (config.general.unwrap_or_default(), values)
     } else {
@@ -56,6 +61,7 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
                 Box::new(Temperature::default()),
                 Box::new(Disk::default()),
                 Box::new(Volume::default()),
+                Box::new(Network::default()),
             ]
         )
     }

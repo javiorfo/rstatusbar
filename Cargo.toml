@@ -9,3 +9,4 @@ toml = "0.8.12"
 serde = { version = "1.0.197", features = [ "derive" ] }
 anyhow = { version = "1.0.86", default-features = false }
 alsa = "0.9"
+reqwest = { version = "0.12", features = ["blocking", "rustls-tls"] }
