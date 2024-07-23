@@ -29,3 +29,13 @@ impl Converter for Temperature {
         self.time.unwrap_or(500)
     }
 }
+
+impl Default for Temperature {
+    fn default() -> Self {
+        Self {
+            time: Some(1000),
+            name: Some(String::from("TEMP")),
+            icon: Some(String::from("󰏈 ")),
+        }
+    }
+}

@@ -37,3 +37,14 @@ impl Converter for Disk {
         self.time.unwrap_or(500)
     }
 }
+
+impl Default for Disk {
+    fn default() -> Self {
+        Self {
+            time: Some(1000),
+            name: Some(String::from("DISK")),
+            icon: Some(String::from("󰋊 ")),
+            unit: Some(String::from("/")),
+        }
+    }
+}

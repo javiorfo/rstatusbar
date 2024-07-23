@@ -28,3 +28,13 @@ impl Converter for Cpu {
         self.time.unwrap_or(500)
     }
 }
+
+impl Default for Cpu {
+    fn default() -> Self {
+        Self {
+            time: Some(1000),
+            name: Some(String::from("CPU")),
+            icon: Some(String::from(" ")),
+        }
+    }
+}

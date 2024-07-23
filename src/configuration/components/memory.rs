@@ -28,3 +28,13 @@ impl Converter for Memory {
         self.time.unwrap_or(500)
     }
 }
+
+impl Default for Memory {
+    fn default() -> Self {
+        Self {
+            time: Some(1000),
+            name: Some(String::from("RAM")),
+            icon: Some(String::from(" ")),
+        }
+    }
+}

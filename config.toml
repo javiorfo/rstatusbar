@@ -2,7 +2,7 @@
 separator = "|"
 
 [cpu]
-time = 500
+time = 1000
 name = "CPU"
 icon = " "
 
