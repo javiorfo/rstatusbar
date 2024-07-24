@@ -4,6 +4,11 @@ use sysinfo::System;
 
 use crate::{component::section::Component, configuration::converter::Converter};
 
+const NAME: &str = "NET";
+const ICON_UP: &str = "󰀂 ";
+const ICON_DOWN: &str = "󰯡 ";
+const TIME: u64 = 1000;
+
 #[derive(Deserialize, Debug)]
 pub struct Network {
     pub time: Option<u64>,
@@ -17,15 +22,15 @@ impl Converter for Network {
         let icon = match get("https://www.google.com") {
             Ok(resp) => {
                 if resp.status().is_success() {
-                    self.icon_up.as_deref().unwrap_or("")
+                    self.icon_up.as_deref().unwrap_or(ICON_UP)
                 } else {
-                    self.icon_down.as_deref().unwrap_or("")
+                    self.icon_down.as_deref().unwrap_or(ICON_DOWN)
                 }
             }
-            Err(_) => self.icon_down.as_deref().unwrap_or(""),
+            Err(_) => self.icon_down.as_deref().unwrap_or(ICON_DOWN)
         };
 
-        let name = self.name.as_deref().unwrap_or("");
+        let name = self.name.as_deref().unwrap_or(NAME);
 
         Component {
             name,
@@ -35,17 +40,17 @@ impl Converter for Network {
     }
 
     fn get_time(&self) -> u64 {
-        self.time.unwrap_or(500)
+        self.time.unwrap_or(TIME)
     }
 }
 
 impl Default for Network {
     fn default() -> Self {
         Self {
-            time: Some(1000),
-            name: Some(String::from("NET")),
-            icon_up: Some(String::from("󰀂 ")),
-            icon_down: Some(String::from("󰯡 ")),
+            time: Some(TIME),
+            name: Some(String::from(NAME)),
+            icon_up: Some(String::from(ICON_UP)),
+            icon_down: Some(String::from(ICON_DOWN)),
         }
     }
 }

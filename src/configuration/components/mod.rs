@@ -1,5 +1,6 @@
 pub mod battery;
 pub mod cpu;
+pub mod date;
 pub mod disk;
 pub mod general;
 pub mod memory;

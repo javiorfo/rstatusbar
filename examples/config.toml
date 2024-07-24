@@ -44,7 +44,7 @@ paty = "/sys/class/power_supply/BAT0/capacity"
 
 [date]
 time = 1000
-format = "day dd/MM/yyyy hh:mm"
+format = "%A %d/%m/%Y %H:%M"
 icon = " "
 
 [bluetooth]

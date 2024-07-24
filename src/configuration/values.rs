@@ -3,6 +3,7 @@ use std::fs;
 use toml::from_str;
 
 use super::components::battery::Battery;
+use super::components::date::Date;
 use super::components::general::General;
 use super::components::network::Network;
 use super::components::volume::Volume;
@@ -19,6 +20,7 @@ struct Config {
     pub volume: Option<Volume>,
     pub network: Option<Network>,
     pub battery: Option<Battery>,
+    pub date: Option<Date>,
 }
 
 pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
@@ -55,6 +57,9 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
         if config.battery.is_some() {
             values.push(Box::new(config.battery.unwrap()));
         }
+        if config.date.is_some() {
+            values.push(Box::new(config.date.unwrap()));
+        }
 
         (config.general.unwrap_or_default(), values)
     } else {
@@ -68,6 +73,7 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
                 Box::new(Volume::default()),
                 Box::new(Network::default()),
                 Box::new(Battery::default()),
+                Box::new(Date::default()),
             ]
         )
     }
