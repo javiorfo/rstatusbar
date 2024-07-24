@@ -3,6 +3,10 @@ use sysinfo::{Components, System};
 
 use crate::{component::section::Component, configuration::converter::Converter};
 
+const NAME: &str = "TEMP";
+const ICON: &str = "󰏈 ";
+const TIME: u64 = 1000;
+
 #[derive(Deserialize, Debug)]
 pub struct Temperature {
     pub time: Option<u64>,
@@ -16,8 +20,8 @@ impl Converter for Temperature {
         let total = components.iter().map(|c| c.temperature()).sum::<f32>();
         let total = total as usize / components.len();
         let total = format!("{}󰔄 ", total);
-        let name = self.name.as_deref().unwrap_or("");
-        let icon = self.icon.as_deref().unwrap_or("");
+        let name = self.name.as_deref().unwrap_or(NAME);
+        let icon = self.icon.as_deref().unwrap_or(ICON);
         Component {
             name,
             icon,
@@ -26,16 +30,16 @@ impl Converter for Temperature {
     }
 
     fn get_time(&self) -> u64 {
-        self.time.unwrap_or(500)
+        self.time.unwrap_or(TIME)
     }
 }
 
 impl Default for Temperature {
     fn default() -> Self {
         Self {
-            time: Some(1000),
-            name: Some(String::from("TEMP")),
-            icon: Some(String::from("󰏈 ")),
+            time: Some(TIME),
+            name: Some(String::from(NAME)),
+            icon: Some(String::from(ICON)),
         }
     }
 }

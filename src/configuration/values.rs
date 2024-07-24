@@ -2,6 +2,7 @@ use serde::Deserialize;
 use std::fs;
 use toml::from_str;
 
+use super::components::battery::Battery;
 use super::components::general::General;
 use super::components::network::Network;
 use super::components::volume::Volume;
@@ -17,6 +18,7 @@ struct Config {
     pub temperature: Option<Temperature>,
     pub volume: Option<Volume>,
     pub network: Option<Network>,
+    pub battery: Option<Battery>,
 }
 
 pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
@@ -50,6 +52,9 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
         if config.network.is_some() {
             values.push(Box::new(config.network.unwrap()));
         }
+        if config.battery.is_some() {
+            values.push(Box::new(config.battery.unwrap()));
+        }
 
         (config.general.unwrap_or_default(), values)
     } else {
@@ -62,6 +67,7 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
                 Box::new(Disk::default()),
                 Box::new(Volume::default()),
                 Box::new(Network::default()),
+                Box::new(Battery::default()),
             ]
         )
     }

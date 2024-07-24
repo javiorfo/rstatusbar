@@ -3,6 +3,11 @@ use sysinfo::{Disks, System};
 
 use crate::{component::section::Component, configuration::converter::Converter};
 
+const NAME: &str = "DISK";
+const ICON: &str = "󰋊 ";
+const UNIT: &str = "/";
+const TIME: u64 = 2000;
+
 #[derive(Deserialize, Debug)]
 pub struct Disk {
     pub time: Option<u64>,
@@ -17,15 +22,15 @@ impl Converter for Disk {
         let disk = Disks::new_with_refreshed_list();
         let selected_disk = disk
             .iter()
-            .find(|d| d.mount_point().to_str() == Some(self.unit.as_deref().unwrap_or("/")))
+            .find(|d| d.mount_point().to_str() == Some(self.unit.as_deref().unwrap_or(UNIT)))
             .unwrap();
 
         let total_space = selected_disk.total_space() as f64;
         let total = (total_space - selected_disk.available_space() as f64) / total_space * 100.0;
 
         let total = format!("{:.0}%", total);
-        let name = self.name.as_deref().unwrap_or("");
-        let icon = self.icon.as_deref().unwrap_or("");
+        let name = self.name.as_deref().unwrap_or(NAME);
+        let icon = self.icon.as_deref().unwrap_or(ICON);
         Component {
             name,
             icon,
@@ -34,17 +39,17 @@ impl Converter for Disk {
     }
 
     fn get_time(&self) -> u64 {
-        self.time.unwrap_or(500)
+        self.time.unwrap_or(TIME)
     }
 }
 
 impl Default for Disk {
     fn default() -> Self {
         Self {
-            time: Some(1000),
-            name: Some(String::from("DISK")),
-            icon: Some(String::from("󰋊 ")),
-            unit: Some(String::from("/")),
+            time: Some(TIME),
+            name: Some(String::from(NAME)),
+            icon: Some(String::from(ICON)),
+            unit: Some(String::from(UNIT)),
         }
     }
 }
