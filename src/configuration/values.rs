@@ -72,7 +72,6 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
                 Box::new(Disk::default()),
                 Box::new(Volume::default()),
                 Box::new(Network::default()),
-                Box::new(Battery::default()),
                 Box::new(Date::default()),
             ]
         )

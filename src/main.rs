@@ -40,13 +40,12 @@ fn statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
             xsetroot.push_str(&result);
             xsetroot.push_str(&general.separator.clone().unwrap());
         }
-        // TODO replace with xsetroot
+
         Command::new("xsetroot")
             .arg("-name")
             .arg(xsetroot)
             .spawn()
             .expect("Internal error executing xsetroot");
-        //         println!("{}", xsetroot);
 
         thread::sleep(Duration::from_millis(100));
     }

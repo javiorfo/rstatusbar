@@ -40,14 +40,9 @@ name = "BAT"
 icon_full = "󰁹" 
 icon_medium = "󰁿" 
 icon_low = "󰁺" 
-paty = "/sys/class/power_supply/BAT0/capacity"
+path = "/sys/class/power_supply/BAT0/capacity"
 
 [date]
 time = 1000
 format = "%A %d/%m/%Y %H:%M"
 icon = " "
-
-[bluetooth]
-
-[weather]
-

@@ -10,6 +10,7 @@ const ICON_FULL: &str = "󰁹";
 const ICON_MEDIUM: &str = "󰁿";
 const ICON_LOW: &str = "󰁺";
 const TIME: u64 = 1000;
+const PATH: &str = "/sys/class/power_supply/BAT0/capacity";
 
 #[derive(Deserialize, Debug)]
 pub struct Battery {
@@ -18,13 +19,13 @@ pub struct Battery {
     pub icon_full: Option<String>,
     pub icon_medium: Option<String>,
     pub icon_low: Option<String>,
-    pub path: String,
+    pub path: Option<String>,
 }
 
 impl Converter for Battery {
     fn convert(&self, _sys: &mut System) -> Component {
-        let battery_percentage =
-            fs::read_to_string(&self.path).expect("Unable to read battery percentage");
+        let battery_percentage = fs::read_to_string(self.path.clone().unwrap_or(PATH.to_string()))
+            .expect("Unable to read battery percentage");
 
         let battery_percentage: u8 = battery_percentage
             .trim()
@@ -62,7 +63,7 @@ impl Default for Battery {
             icon_full: Some(String::from(ICON_FULL)),
             icon_medium: Some(String::from(ICON_MEDIUM)),
             icon_low: Some(String::from(ICON_LOW)),
-            path: String::from("/sys/class/power_supply/BAT0/capacity"),
+            path: Some(String::from(PATH)),
         }
     }
 }
