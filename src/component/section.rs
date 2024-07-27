@@ -8,6 +8,10 @@ pub struct Component<'a> {
 
 impl Display for Component<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, " {} {} {} ", self.icon, self.name, self.value)
+        if self.value.is_empty() {
+            write!(f, " {} {} ", self.icon, self.name)
+        } else {
+            write!(f, " {} {} {} ", self.icon, self.name, self.value)
+        }
     }
 }

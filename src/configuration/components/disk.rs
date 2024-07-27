@@ -17,7 +17,7 @@ pub struct Disk {
 }
 
 impl Converter for Disk {
-    fn convert(&self, sys: &mut System) -> Component {
+    fn convert(&self, sys: &mut System) -> anyhow::Result<Component> {
         sys.refresh_all();
         let disk = Disks::new_with_refreshed_list();
         let selected_disk = disk
@@ -31,11 +31,12 @@ impl Converter for Disk {
         let total = format!("{:.0}%", total);
         let name = self.name.as_deref().unwrap_or(NAME);
         let icon = self.icon.as_deref().unwrap_or(ICON);
-        Component {
+
+        Ok(Component {
             name,
             icon,
             value: total,
-        }
+        })
     }
 
     fn get_time(&self) -> u64 {

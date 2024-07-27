@@ -12,7 +12,6 @@ const ICON_ACTIVE: &str = " ";
 const ICON_MUTED: &str = "󰖁 ";
 const TIME: u64 = 100;
 
-
 #[derive(Deserialize, Debug)]
 pub struct Volume {
     pub time: Option<u64>,
@@ -22,32 +21,43 @@ pub struct Volume {
 }
 
 impl Converter for Volume {
-    fn convert(&self, _sys: &mut System) -> Component {
-        let mixer = Mixer::new("default", false).unwrap();
+    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
+        let mixer = Mixer::new("default", false).map_err(anyhow::Error::msg)?;
 
         let selem_id = SelemId::new("Master", 0);
         let elem = mixer.find_selem(&selem_id).unwrap();
+        let is_muted = elem
+            .get_playback_switch(SelemChannelId::FrontLeft)
+            .map_err(anyhow::Error::msg)?
+            == 0;
 
-        let icon = if elem.get_playback_switch(SelemChannelId::FrontLeft).unwrap() == 0 {
+        let icon = if is_muted {
             self.icon_muted.as_deref().unwrap_or(ICON_MUTED)
         } else {
             self.icon_active.as_deref().unwrap_or(ICON_ACTIVE)
         };
 
-        let volume_range = elem.get_playback_volume_range();
-        let volume = elem.get_playback_volume(SelemChannelId::FrontLeft).unwrap();
+        let total = if !is_muted {
+            let volume_range = elem.get_playback_volume_range();
+            let volume = elem
+                .get_playback_volume(SelemChannelId::FrontLeft)
+                .map_err(anyhow::Error::msg)?;
 
-        let volume_percentage =
-            ((volume - volume_range.0) as f64 / (volume_range.1 - volume_range.0) as f64) * 100.0;
+            let volume_percentage = ((volume - volume_range.0) as f64
+                / (volume_range.1 - volume_range.0) as f64)
+                * 100.0;
 
+            format!("{:.0}%", volume_percentage)
+        } else {
+            String::from("MUTED")
+        };
         let name = self.name.as_deref().unwrap_or(NAME);
-        let total = format!("{:.0}%", volume_percentage);
 
-        Component {
+        Ok(Component {
             name,
             icon,
             value: total,
-        }
+        })
     }
 
     fn get_time(&self) -> u64 {

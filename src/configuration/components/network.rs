@@ -18,7 +18,7 @@ pub struct Network {
 }
 
 impl Converter for Network {
-    fn convert(&self, _sys: &mut System) -> Component {
+    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
         let icon = match get("https://www.google.com") {
             Ok(resp) => {
                 if resp.status().is_success() {
@@ -27,16 +27,16 @@ impl Converter for Network {
                     self.icon_down.as_deref().unwrap_or(ICON_DOWN)
                 }
             }
-            Err(_) => self.icon_down.as_deref().unwrap_or(ICON_DOWN)
+            Err(_) => self.icon_down.as_deref().unwrap_or(ICON_DOWN),
         };
 
         let name = self.name.as_deref().unwrap_or(NAME);
 
-        Component {
+        Ok(Component {
             name,
             icon,
             value: String::from(""),
-        }
+        })
     }
 
     fn get_time(&self) -> u64 {

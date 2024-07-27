@@ -16,18 +16,19 @@ pub struct Date {
 }
 
 impl Converter for Date {
-    fn convert(&self, _sys: &mut System) -> Component {
+    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
         let date_time = Local::now();
         let formatted = format!(
             "{}",
             date_time.format(self.format.as_deref().unwrap_or(FORMAT))
         );
         let icon = self.icon.as_deref().unwrap_or(ICON);
-        Component {
+
+        Ok(Component {
             name: "",
             icon,
             value: formatted,
-        }
+        })
     }
 
     fn get_time(&self) -> u64 {

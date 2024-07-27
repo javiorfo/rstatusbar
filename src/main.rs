@@ -10,36 +10,45 @@ use sysinfo::System;
 mod component;
 mod configuration;
 
+const TIME: u64 = 100;
+
 fn main() {
     let mut values: Vec<Arc<Mutex<String>>> = Vec::new();
     let (general, config) = get_configuration();
 
     for v in config {
         let cache = Arc::new(Mutex::new(String::new()));
-        process(cache.clone(), v);
+        create_component(cache.clone(), v);
         values.push(cache);
     }
 
-    statusbar(general, values);
+    create_statusbar(general, values);
 }
 
-fn process(cache: Arc<Mutex<String>>, converter: Box<dyn Converter>) {
+fn create_component(cache: Arc<Mutex<String>>, converter: Box<dyn Converter>) {
     let mut sys = System::new_all();
     thread::spawn(move || loop {
-        let result = format!("{}", converter.convert(&mut sys));
-        *cache.clone().lock().unwrap() = result;
-        thread::sleep(Duration::from_millis(converter.get_time()));
+        if let Ok(comp) = converter.convert(&mut sys) {
+            let result = format!("{}", comp);
+            *cache.clone().lock().unwrap() = result;
+            thread::sleep(Duration::from_millis(converter.get_time()));
+        } else {
+            continue;
+        }
     });
 }
 
-fn statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
+fn create_statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
     loop {
         let mut xsetroot = String::new();
         for value in list.iter() {
             let result = value.lock().unwrap().clone();
-            xsetroot.push_str(&result);
-            xsetroot.push_str(&general.separator.clone().unwrap());
+            if !result.is_empty() {
+                xsetroot.push_str(&result);
+                xsetroot.push_str(&general.separator.clone().unwrap());
+            }
         }
+        xsetroot.pop();
 
         Command::new("xsetroot")
             .arg("-name")
@@ -47,6 +56,6 @@ fn statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
             .spawn()
             .expect("Internal error executing xsetroot");
 
-        thread::sleep(Duration::from_millis(100));
+        thread::sleep(Duration::from_millis(TIME));
     }
 }

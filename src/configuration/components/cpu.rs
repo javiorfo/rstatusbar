@@ -15,17 +15,18 @@ pub struct Cpu {
 }
 
 impl Converter for Cpu {
-    fn convert(&self, sys: &mut System) -> Component {
+    fn convert(&self, sys: &mut System) -> anyhow::Result<Component> {
         sys.refresh_cpu_usage();
         let total = sys.global_cpu_info().cpu_usage() as usize;
         let total = format!("{}%", total);
         let name = self.name.as_deref().unwrap_or(NAME);
         let icon = self.icon.as_deref().unwrap_or(ICON);
-        Component {
+
+        Ok(Component {
             name,
             icon,
             value: total,
-        }
+        })
     }
 
     fn get_time(&self) -> u64 {

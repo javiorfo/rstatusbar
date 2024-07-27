@@ -23,14 +23,14 @@ pub struct Battery {
 }
 
 impl Converter for Battery {
-    fn convert(&self, _sys: &mut System) -> Component {
+    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
         let battery_percentage = fs::read_to_string(self.path.clone().unwrap_or(PATH.to_string()))
-            .expect("Unable to read battery percentage");
+            .map_err(anyhow::Error::msg)?;
 
         let battery_percentage: u8 = battery_percentage
             .trim()
             .parse()
-            .expect("Unable to parse battery percentage");
+            .map_err(anyhow::Error::msg)?;
 
         let total = format!("{}%", battery_percentage);
 
@@ -43,11 +43,12 @@ impl Converter for Battery {
         } else {
             self.icon_low.as_deref().unwrap_or(ICON_LOW)
         };
-        Component {
+
+        Ok(Component {
             name,
             icon,
             value: total,
-        }
+        })
     }
 
     fn get_time(&self) -> u64 {
