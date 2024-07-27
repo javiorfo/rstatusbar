@@ -9,7 +9,7 @@ icon = " "
 [ram]
 time = 1000
 name = "RAM"
-icon = " "
+icon = " "
 
 [temperature]
 time = 1000

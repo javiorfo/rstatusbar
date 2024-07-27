@@ -4,7 +4,7 @@ use sysinfo::System;
 use crate::{component::section::Component, configuration::converter::Converter};
 
 const NAME: &str = "RAM";
-const ICON: &str = " ";
+const ICON: &str = " ";
 const TIME: u64 = 1000;
 
 #[derive(Deserialize, Debug)]
