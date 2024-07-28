@@ -19,7 +19,7 @@ impl Converter for Temperature {
         let components = Components::new_with_refreshed_list();
         let total = components.iter().map(|c| c.temperature()).sum::<f32>();
         let total = total as usize / components.len();
-        let total = format!("{}󰔄 ", total);
+        let total = format!("{}°C", total);
         let name = self.name.as_deref().unwrap_or(NAME);
         let icon = self.icon.as_deref().unwrap_or(ICON);
 

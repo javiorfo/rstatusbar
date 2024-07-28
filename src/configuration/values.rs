@@ -42,11 +42,11 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
         if config.memory.is_some() {
             values.push(Box::new(config.memory.unwrap()));
         }
-        if config.disk.is_some() {
-            values.push(Box::new(config.disk.unwrap()));
-        }
         if config.temperature.is_some() {
             values.push(Box::new(config.temperature.unwrap()));
+        }
+        if config.disk.is_some() {
+            values.push(Box::new(config.disk.unwrap()));
         }
         if config.volume.is_some() {
             values.push(Box::new(config.volume.unwrap()));
