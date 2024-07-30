@@ -39,13 +39,14 @@ fn create_component(cache: Arc<Mutex<String>>, converter: Box<dyn Converter>) {
 }
 
 fn create_statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
+    let separator = &general.separator.clone().unwrap();
     loop {
         let mut xsetroot = String::new();
         for value in list.iter() {
             let result = value.lock().unwrap().clone();
             if !result.is_empty() {
                 xsetroot.push_str(&result);
-                xsetroot.push_str(&general.separator.clone().unwrap());
+                xsetroot.push_str(separator);
             }
         }
         xsetroot.pop();
