@@ -28,12 +28,25 @@ fn main() {
 fn create_component(cache: Arc<Mutex<String>>, converter: Box<dyn Converter>) {
     let mut sys = System::new_all();
     thread::spawn(move || loop {
-        if let Ok(comp) = converter.convert(&mut sys) {
-            let result = format!("{}", comp);
-            *cache.clone().lock().unwrap() = result;
-            thread::sleep(Duration::from_millis(converter.get_time()));
-        } else {
-            continue;
+        match converter.convert(&mut sys) {
+            Ok(comp) => {
+                let result = format!("{}", comp);
+                match cache.clone().lock() {
+                    Ok(mut lock) => {
+                        *lock = result;
+                    }
+                    Err(e) => {
+                        eprintln!("Component lock error: {}", e);
+                        continue;
+                    }
+                }
+
+                thread::sleep(Duration::from_millis(converter.get_time()));
+            }
+            Err(e) => {
+                eprintln!("Converter error: {}", e);
+                continue;
+            }
         }
     });
 }
@@ -43,20 +56,37 @@ fn create_statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
     loop {
         let mut xsetroot = String::new();
         for value in list.iter() {
-            let result = value.lock().unwrap().clone();
-            if !result.is_empty() {
-                xsetroot.push_str(&result);
-                xsetroot.push_str(separator);
+            match value.lock() {
+                Ok(lock) => {
+                    let result = lock;
+                    if !result.is_empty() {
+                        xsetroot.push_str(&result);
+                        xsetroot.push_str(separator);
+                    }
+                }
+                Err(e) => {
+                    eprintln!("Statusbar lock error: {}", e);
+                    continue;
+                }
             }
         }
-        xsetroot.pop();
-
-        Command::new("xsetroot")
-            .arg("-name")
-            .arg(xsetroot)
-            .spawn()
-            .expect("Internal error executing xsetroot");
-
-        thread::sleep(Duration::from_millis(TIME));
+        if !xsetroot.is_empty() {
+            if xsetroot.ends_with(separator) {
+                xsetroot.pop();
+            }
+            match Command::new("xsetroot").arg("-name").arg(&xsetroot).output() {
+                Ok(output) => {
+                    if output.status.success() {
+                        thread::sleep(Duration::from_millis(TIME));
+                    } else {
+                        eprintln!("Xsetroot error output status: {} {}", output.status, xsetroot);
+                    }
+                }
+                Err(e) => {
+                    eprintln!("Xsetroot error: {}, string: {}", e, xsetroot);
+                    break;
+                }
+            }
+        }
     }
 }
