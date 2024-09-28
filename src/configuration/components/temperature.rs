@@ -44,3 +44,40 @@ impl Default for Temperature {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sysinfo::System;
+
+    #[test]
+    fn test_temperature_get_time() {
+        let temperature = Temperature {
+            time: Some(2000),
+            name: None,
+            icon: None,
+        };
+        assert_eq!(temperature.get_time(), 2000);
+
+        let temperature_default = Temperature::default();
+        assert_eq!(temperature_default.get_time(), TIME);
+    }
+
+    #[test]
+    fn test_temperature_convert() {
+        let mut sys = System::new_all();
+
+        sys.refresh_all();
+
+        let temperature = Temperature {
+            time: Some(1000),
+            name: Some(String::from("Current Temperature")),
+            icon: Some(String::from(ICON)),
+        };
+
+        let component = temperature.convert(&mut sys).unwrap();
+
+        assert_eq!(component.name, "Current Temperature");
+        assert_eq!(component.icon, ICON);
+    }
+}

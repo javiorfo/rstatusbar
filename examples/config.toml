@@ -6,7 +6,7 @@ time = 1000
 name = "CPU"
 icon = " "
 
-[ram]
+[memory]
 time = 1000
 name = "RAM"
 icon = " "
@@ -34,13 +34,13 @@ name = "NET"
 icon_up = "󰀂 " 
 icon_down = "󰯡 " 
 
-[battery]
-time = 5000
-name = "BAT"
-icon_full = "󰁹" 
-icon_medium = "󰁿" 
-icon_low = "󰁺" 
-path = "/sys/class/power_supply/BAT0/capacity"
+# [battery]
+# time = 5000
+# name = "BAT"
+# icon_full = "󰁹" 
+# icon_medium = "󰁿" 
+# icon_low = "󰁺" 
+# path = "/sys/class/power_supply/BAT0/capacity"
 
 [date]
 time = 1000

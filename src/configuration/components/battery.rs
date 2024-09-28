@@ -68,3 +68,81 @@ impl Default for Battery {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs::File;
+    use std::io::Write;
+    use tempfile::tempdir;
+
+    #[test]
+    fn test_convert_full_battery() {
+        let dir = tempdir().unwrap();
+        let path = dir.path().join("capacity");
+        let mut file = File::create(&path).unwrap();
+        writeln!(file, "90").unwrap();
+
+        let battery = Battery {
+            path: Some(path.to_string_lossy().to_string()),
+            ..Default::default()
+        };
+
+        let component = battery.convert(&mut System::new()).unwrap();
+        assert_eq!(component.name, NAME);
+        assert_eq!(component.icon, ICON_FULL);
+        assert_eq!(component.value, "90%");
+    }
+
+    #[test]
+    fn test_convert_medium_battery() {
+        let dir = tempdir().unwrap();
+        let path = dir.path().join("capacity");
+        let mut file = File::create(&path).unwrap();
+        writeln!(file, "50").unwrap();
+
+        let battery = Battery {
+            path: Some(path.to_string_lossy().to_string()),
+            ..Default::default()
+        };
+
+        let component = battery.convert(&mut System::new()).unwrap();
+        assert_eq!(component.name, NAME);
+        assert_eq!(component.icon, ICON_MEDIUM);
+        assert_eq!(component.value, "50%");
+    }
+
+    #[test]
+    fn test_convert_low_battery() {
+        let dir = tempdir().unwrap();
+        let path = dir.path().join("capacity");
+        let mut file = File::create(&path).unwrap();
+        writeln!(file, "20").unwrap();
+
+        let battery = Battery {
+            path: Some(path.to_string_lossy().to_string()),
+            ..Default::default()
+        };
+
+        let component = battery.convert(&mut System::new()).unwrap();
+        assert_eq!(component.name, NAME);
+        assert_eq!(component.icon, ICON_LOW);
+        assert_eq!(component.value, "20%");
+    }
+
+    #[test]
+    fn test_convert_invalid_capacity() {
+        let dir = tempdir().unwrap();
+        let path = dir.path().join("capacity");
+        let mut file = File::create(&path).unwrap();
+        writeln!(file, "invalid").unwrap();
+
+        let battery = Battery {
+            path: Some(path.to_string_lossy().to_string()),
+            ..Default::default()
+        };
+
+        let result = battery.convert(&mut System::new());
+        assert!(result.is_err());
+    }
+}

@@ -74,12 +74,20 @@ fn create_statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
             if xsetroot.ends_with(separator) {
                 xsetroot.pop();
             }
-            match Command::new("xsetroot").arg("-name").arg(&xsetroot).output() {
+            match Command::new("xsetroot")
+                .arg("-name")
+                .arg(&xsetroot)
+                .output()
+            {
                 Ok(output) => {
                     if output.status.success() {
                         thread::sleep(Duration::from_millis(TIME));
                     } else {
-                        eprintln!("Xsetroot error output status: {} {}", output.status, xsetroot);
+                        eprintln!(
+                            "Xsetroot error output status: {} {}",
+                            output.status, xsetroot
+                        );
+                        break;
                     }
                 }
                 Err(e) => {

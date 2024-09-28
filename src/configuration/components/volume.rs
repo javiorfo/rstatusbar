@@ -11,6 +11,7 @@ const NAME: &str = "VOL";
 const ICON_ACTIVE: &str = " ";
 const ICON_MUTED: &str = "󰖁 ";
 const TIME: u64 = 100;
+const MUTED: &str = "MUTED";
 
 #[derive(Deserialize, Debug)]
 pub struct Volume {
@@ -49,7 +50,7 @@ impl Converter for Volume {
 
             format!("{:.0}%", volume_percentage)
         } else {
-            String::from("MUTED")
+            String::from(MUTED)
         };
         let name = self.name.as_deref().unwrap_or(NAME);
 
@@ -73,5 +74,37 @@ impl Default for Volume {
             icon_active: Some(String::from(ICON_ACTIVE)),
             icon_muted: Some(String::from(ICON_MUTED)),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sysinfo::System;
+
+    #[test]
+    fn test_volume_get_time() {
+        let volume = Volume {
+            time: Some(200),
+            name: None,
+            icon_active: None,
+            icon_muted: None,
+        };
+        assert_eq!(volume.get_time(), 200);
+
+        let volume_default = Volume::default();
+        assert_eq!(volume_default.get_time(), TIME);
+    }
+
+    #[test]
+    fn test_volume_convert() {
+        let mut sys = System::new_all();
+
+        let volume = Volume::default();
+        let component = volume.convert(&mut sys).unwrap();
+
+        assert_eq!(component.name, NAME);
+        assert!(component.icon == ICON_ACTIVE || component.icon == ICON_MUTED);
+        assert!(component.value.ends_with("%") || component.value == MUTED);
     }
 }

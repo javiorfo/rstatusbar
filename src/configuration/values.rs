@@ -73,7 +73,111 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
                 Box::new(Volume::default()),
                 Box::new(Network::default()),
                 Box::new(Date::default()),
-            ]
+            ],
         )
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::env;
+    use std::fs::File;
+    use std::io::Write;
+    use tempfile::tempdir;
+
+    #[test]
+    fn test_get_configuration_with_valid_toml() {
+        let config_content = r#"
+            [general]
+            separator = "|"
+
+            [cpu]
+            time = 1000
+            name = "CPU"
+            icon = " "
+
+            [memory]
+            time = 1000
+            name = "RAM"
+            icon = " "
+
+            [temperature]
+            time = 1000
+            name = "TEMP"
+            icon = "󰏈 " 
+
+            [disk]
+            time = 2000
+            name = "DISK"
+            icon = "󰋊 "
+            unit = "/"
+
+            [volume]
+            time = 100
+            name = "VOL"
+            icon_active = " " 
+            icon_muted = "󰖁 " 
+
+            [network]
+            time = 5000
+            name = "NET"
+            icon_up = "󰀂 " 
+            icon_down = "󰯡 " 
+
+            [date]
+            time = 1000
+            format = "%A %d/%m/%Y %H:%M"
+            icon = " "
+
+        "#;
+
+        let dir = tempdir().unwrap();
+        let home_path = dir.path().to_str().unwrap();
+        env::set_var("HOME", home_path);
+
+        let config_dir = format!("{}/.config/rustatusbar", home_path);
+        fs::create_dir_all(&config_dir).unwrap();
+
+        let config_path = format!("{}/config.toml", config_dir);
+        let mut file = File::create(&config_path).unwrap();
+        writeln!(file, "{}", config_content).unwrap();
+
+        let (general, converters) = get_configuration();
+
+        assert!(general.separator.is_some());
+
+        assert_eq!(converters.len(), 7);
+    }
+
+    #[test]
+    fn test_get_configuration_with_missing_toml() {
+        let dir = tempdir().unwrap();
+        let home_path = dir.path().to_str().unwrap();
+        env::set_var("HOME", home_path);
+        let (general, converters) = get_configuration();
+        assert!(general.separator.is_some());
+        assert_eq!(converters.len(), 7);
+    }
+
+    #[test]
+    fn test_get_configuration_with_invalid_toml() {
+        let dir = tempdir().unwrap();
+        let home_path = dir.path().to_str().unwrap();
+        env::set_var("HOME", home_path);
+
+        let config_dir = format!("{}/.config/rustatusbar", home_path);
+        fs::create_dir_all(&config_dir).unwrap();
+
+        let config_path = format!("{}/config.toml", config_dir);
+
+        let mut file = File::create(&config_path).unwrap();
+        writeln!(file, "invalid_toml").unwrap();
+
+        let result = std::panic::catch_unwind(|| {
+            get_configuration();
+        });
+
+        assert!(result.is_err());
     }
 }

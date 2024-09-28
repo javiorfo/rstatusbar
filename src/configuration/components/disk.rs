@@ -23,7 +23,7 @@ impl Converter for Disk {
         let selected_disk = disk
             .iter()
             .find(|d| d.mount_point().to_str() == Some(self.unit.as_deref().unwrap_or(UNIT)))
-            .unwrap();
+            .ok_or_else(|| anyhow::anyhow!(format!("Disk: Not a valid unit {:?}", self.unit)))?;
 
         let total_space = selected_disk.total_space() as f64;
         let total = (total_space - selected_disk.available_space() as f64) / total_space * 100.0;
@@ -52,5 +52,78 @@ impl Default for Disk {
             icon: Some(String::from(ICON)),
             unit: Some(String::from(UNIT)),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sysinfo::System;
+
+    #[test]
+    fn test_disk_get_time() {
+        let disk = Disk {
+            time: Some(3000),
+            name: None,
+            icon: None,
+            unit: None,
+        };
+        assert_eq!(disk.get_time(), 3000);
+
+        let disk_default = Disk::default();
+        assert_eq!(disk_default.get_time(), TIME);
+    }
+
+    #[test]
+    fn test_disk_convert() {
+        let mut sys = System::new_all();
+
+        sys.refresh_all();
+
+        let disk = Disk {
+            time: Some(2000),
+            name: Some(String::from("Custom Disk")),
+            icon: Some(String::from(ICON)),
+            unit: Some(String::from("/")),
+        };
+
+        let component = disk.convert(&mut sys).unwrap();
+
+        assert_eq!(component.name, "Custom Disk");
+        assert_eq!(component.icon, ICON);
+        assert!(component.value.ends_with("%"));
+    }
+
+    #[test]
+    fn test_disk_convert_with_default_values() {
+        let mut sys = System::new_all();
+
+        sys.refresh_all();
+
+        let disk = Disk::default();
+
+        let component = disk.convert(&mut sys).unwrap();
+
+        assert_eq!(component.name, NAME);
+        assert_eq!(component.icon, ICON);
+        assert!(component.value.ends_with("%"));
+    }
+
+    #[test]
+    fn test_disk_convert_with_invalid_unit() {
+        let mut sys = System::new_all();
+
+        sys.refresh_all();
+
+        let disk = Disk {
+            time: Some(2000),
+            name: Some(String::from("Invalid Disk")),
+            icon: Some(String::from(ICON)),
+            unit: Some(String::from("invalid_unit")),
+        };
+
+        let result = disk.convert(&mut sys);
+
+        assert!(result.is_err());
     }
 }

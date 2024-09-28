@@ -2,7 +2,7 @@
 *Configurable statusbar in Rust for Xorg server using xsetroot*
 
 ## Caveats
-- Dependencies: `Rust`, `xsetroot`
+- Dependencies: `rust`, `xorg-xsetroot`
 - This library has been developed on and for Linux following open source philosophy.
 
 ## Installation
@@ -15,7 +15,7 @@ sudo make clean install
 
 - In your **~/.xinitrc** to start in every login
 ```bash
-rustatusbar &
+rustatusbar & 2> rustatusbar_error.log
 ```
 
 ## Overview
@@ -28,6 +28,8 @@ rustatusbar &
 | VOLUME LEVEL | :heavy_check_mark: | Level and Mute status |
 | BATTERY LEVEL | :heavy_check_mark: | percentage |
 | WEATHER | :x: | |
+| BLUETOOTH | :x: | |
+| CUSTOM SCRIPT | :x: | |
 | NETWORK STATUS | :heavy_check_mark: | Up or down |
 | DATE | :heavy_check_mark: | could be custimizable |
 

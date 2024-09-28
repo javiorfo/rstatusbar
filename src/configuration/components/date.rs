@@ -45,3 +45,65 @@ impl Default for Date {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_date_get_time() {
+        let date = Date {
+            time: Some(2000),
+            format: None,
+            icon: None,
+        };
+        assert_eq!(date.get_time(), 2000);
+
+        let date_default = Date::default();
+        assert_eq!(date_default.get_time(), TIME);
+    }
+
+    #[test]
+    fn test_date_convert() {
+        let mut sys = System::new_all();
+
+        let date = Date {
+            time: Some(1000),
+            format: Some(String::from("%Y-%m-%d")),
+            icon: Some(String::from(ICON)),
+        };
+
+        let component = date.convert(&mut sys).unwrap();
+
+        assert_eq!(component.icon, ICON);
+        assert_eq!(component.value.len(), 10);
+    }
+
+    #[test]
+    fn test_date_convert_with_default_values() {
+        let mut sys = System::new_all();
+
+        let date = Date::default();
+
+        let component = date.convert(&mut sys).unwrap();
+
+        assert_eq!(component.icon, ICON);
+        assert_eq!(component.value.len(), 25);
+    }
+
+    #[test]
+    fn test_date_convert_with_invalid_format() {
+        let mut sys = System::new_all();
+
+        let date = Date {
+            time: Some(1000),
+            format: Some(String::from("invalid_format")),
+            icon: Some(String::from(ICON)),
+        };
+
+        let component = date.convert(&mut sys).unwrap();
+
+        assert_eq!(component.icon, ICON);
+        assert!(!component.value.is_empty());
+    }
+}

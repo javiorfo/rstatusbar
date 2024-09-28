@@ -13,7 +13,6 @@ build:
 	$(CARGO) build --release
 
 install: build
-# 	install -Dm755 $(TARGET)/$(BINARY) $(INSTALL_DIR)
 	install -m 0755 $(TARGET)/$(BINARY) $(INSTALL_DIR)
 
 uninstall:

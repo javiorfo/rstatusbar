@@ -43,3 +43,56 @@ impl Default for Memory {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sysinfo::System;
+
+    #[test]
+    fn test_memory_get_time() {
+        let memory = Memory {
+            time: Some(2000),
+            name: None,
+            icon: None,
+        };
+        assert_eq!(memory.get_time(), 2000);
+
+        let memory_default = Memory::default();
+        assert_eq!(memory_default.get_time(), TIME);
+    }
+
+    #[test]
+    fn test_memory_convert() {
+        let mut sys = System::new_all();
+
+        sys.refresh_memory();
+
+        let memory = Memory {
+            time: Some(1000),
+            name: Some(String::from("Custom RAM")),
+            icon: Some(String::from(ICON)),
+        };
+
+        let component = memory.convert(&mut sys).unwrap();
+
+        assert_eq!(component.name, "Custom RAM");
+        assert_eq!(component.icon, ICON);
+        assert!(component.value.ends_with("%"));
+    }
+
+    #[test]
+    fn test_memory_convert_with_default_values() {
+        let mut sys = System::new_all();
+
+        sys.refresh_memory();
+
+        let memory = Memory::default();
+
+        let component = memory.convert(&mut sys).unwrap();
+
+        assert_eq!(component.name, NAME);
+        assert_eq!(component.icon, ICON);
+        assert!(component.value.ends_with("%"));
+    }
+}
