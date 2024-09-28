@@ -7,6 +7,7 @@ use super::components::date::Date;
 use super::components::general::General;
 use super::components::network::Network;
 use super::components::volume::Volume;
+use super::components::weather::Weather;
 use super::components::{cpu::Cpu, disk::Disk, memory::Memory, temperature::Temperature};
 use super::converter::Converter;
 
@@ -21,6 +22,7 @@ struct Config {
     pub network: Option<Network>,
     pub battery: Option<Battery>,
     pub date: Option<Date>,
+    pub weather: Option<Weather>,
 }
 
 pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
@@ -56,6 +58,9 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
         }
         if config.battery.is_some() {
             values.push(Box::new(config.battery.unwrap()));
+        }
+        if config.weather.is_some() {
+            values.push(Box::new(config.weather.unwrap()));
         }
         if config.date.is_some() {
             values.push(Box::new(config.date.unwrap()));
@@ -124,6 +129,10 @@ mod tests {
             name = "NET"
             icon_up = "󰀂 " 
             icon_down = "󰯡 " 
+            
+            [weather]
+            name = "WEA"
+            location = "Buenos+Aires"
 
             [date]
             time = 1000
@@ -147,7 +156,7 @@ mod tests {
 
         assert!(general.separator.is_some());
 
-        assert_eq!(converters.len(), 7);
+        assert_eq!(converters.len(), 8);
     }
 
     #[test]

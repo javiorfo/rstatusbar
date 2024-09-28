@@ -7,3 +7,4 @@ pub mod memory;
 pub mod network;
 pub mod temperature;
 pub mod volume;
+pub mod weather;

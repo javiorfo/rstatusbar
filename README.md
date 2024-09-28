@@ -27,7 +27,7 @@ rustatusbar & 2> rustatusbar_error.log
 | DISK USAGE | :heavy_check_mark: | percentage |
 | VOLUME LEVEL | :heavy_check_mark: | Level and Mute status |
 | BATTERY LEVEL | :heavy_check_mark: | percentage |
-| WEATHER | :x: | |
+| WEATHER | :heavy_check_mark: | Celcious |
 | BLUETOOTH | :x: | |
 | CUSTOM SCRIPT | :x: | |
 | NETWORK STATUS | :heavy_check_mark: | Up or down |
