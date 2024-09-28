@@ -5,6 +5,7 @@ pub mod disk;
 pub mod general;
 pub mod memory;
 pub mod network;
+pub mod script;
 pub mod temperature;
 pub mod volume;
 pub mod weather;

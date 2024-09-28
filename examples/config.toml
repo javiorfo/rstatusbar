@@ -42,6 +42,18 @@ icon_down = "󰯡 "
 # icon_low = "󰁺" 
 # path = "/sys/class/power_supply/BAT0/capacity"
 
+# [script]
+# time = 1000;
+# name = "SCR";
+# icon = "󰯁 ";
+# path = "/path/to/script.sh"
+
+# [weather]
+# time = 1800000
+# name = "WEA"
+# icon = " "
+# location = "Buenos+Aires"
+
 [date]
 time = 1000
 format = "%A %d/%m/%Y %H:%M"

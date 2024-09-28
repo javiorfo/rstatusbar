@@ -2,7 +2,7 @@
 *Configurable statusbar in Rust for Xorg server using xsetroot*
 
 ## Caveats
-- Dependencies: `rust`, `xorg-xsetroot`
+- Dependencies: `rust`, `xorg-xsetroot`, `curl`
 - This library has been developed on and for Linux following open source philosophy.
 
 ## Installation
@@ -21,17 +21,17 @@ rustatusbar & 2> rustatusbar_error.log
 ## Overview
 | Component | rustatusbar | NOTE |
 | ------- | ------------- | ---- |
-| CPU usage | :heavy_check_mark: | percentage |
-| RAM usage | :heavy_check_mark: | percentage |
+| CPU usage | :heavy_check_mark: | Percentage |
+| RAM usage | :heavy_check_mark: | Percentage |
 | TEMPERATURE | :heavy_check_mark: | Celcious |
-| DISK USAGE | :heavy_check_mark: | percentage |
+| DISK USAGE | :heavy_check_mark: | Percentage |
 | VOLUME LEVEL | :heavy_check_mark: | Level and Mute status |
-| BATTERY LEVEL | :heavy_check_mark: | percentage |
-| WEATHER | :heavy_check_mark: | Celcious |
 | BLUETOOTH | :x: | |
-| CUSTOM SCRIPT | :x: | |
+| BATTERY LEVEL | :heavy_check_mark: | Percentage |
+| CUSTOM SCRIPT | :heavy_check_mark: | Execute a custom script.sh |
 | NETWORK STATUS | :heavy_check_mark: | Up or down |
-| DATE | :heavy_check_mark: | could be custimizable |
+| WEATHER | :heavy_check_mark: | Celcious, using [wttr](https://wttr.in/) |
+| DATE | :heavy_check_mark: | Could be custimizable |
 
 ## Customizable
 - By default the statusbar contains: **cpu usage, memory usage, temperature, disk usage, volume, network status and datetime**

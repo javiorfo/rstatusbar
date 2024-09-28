@@ -6,6 +6,7 @@ use super::components::battery::Battery;
 use super::components::date::Date;
 use super::components::general::General;
 use super::components::network::Network;
+use super::components::script::Script;
 use super::components::volume::Volume;
 use super::components::weather::Weather;
 use super::components::{cpu::Cpu, disk::Disk, memory::Memory, temperature::Temperature};
@@ -21,8 +22,9 @@ struct Config {
     pub volume: Option<Volume>,
     pub network: Option<Network>,
     pub battery: Option<Battery>,
-    pub date: Option<Date>,
+    pub script: Option<Script>,
     pub weather: Option<Weather>,
+    pub date: Option<Date>,
 }
 
 pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
@@ -58,6 +60,9 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
         }
         if config.battery.is_some() {
             values.push(Box::new(config.battery.unwrap()));
+        }
+        if config.script.is_some() {
+            values.push(Box::new(config.script.unwrap()));
         }
         if config.weather.is_some() {
             values.push(Box::new(config.weather.unwrap()));
