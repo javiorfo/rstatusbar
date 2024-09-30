@@ -1,4 +1,4 @@
-# rustatusbar
+# rstatusbar
 *Configurable statusbar in Rust for Xorg server using xsetroot*
 
 ## Caveats
@@ -8,18 +8,18 @@
 ## Installation
 - First step:
 ```bash
-git clone https://github.com/javiorfo/rustatusbar
-cd rustatusbar
+git clone https://github.com/javiorfo/rstatusbar
+cd rstatusbar
 sudo make clean install
 ```
 
 - In your **~/.xinitrc** to start in every login
 ```bash
-rustatusbar & 2> rustatusbar_error.log
+rstatusbar & 2> rstatusbar_error.log
 ```
 
 ## Overview
-| Component | rustatusbar | NOTE |
+| Component | rstatusbar | NOTE |
 | ------- | ------------- | ---- |
 | CPU usage | :heavy_check_mark: | Percentage |
 | RAM usage | :heavy_check_mark: | Percentage |
@@ -35,11 +35,11 @@ rustatusbar & 2> rustatusbar_error.log
 
 ## Customizable
 - By default the statusbar contains: **cpu usage, memory usage, temperature, disk usage, volume, network status and datetime**
-- For a custom configuration put this file [config.toml](https://github.com/javiorfo/rustatusbar/blob/master/examples/config.toml) in your `~/.config/rustatusbar/config.toml` and edit it to change values or delete a component.
+- For a custom configuration put this file [config.toml](https://github.com/javiorfo/rstatusbar/blob/master/examples/config.toml) in your `~/.config/rstatusbar/config.toml` and edit it to change values or delete a component.
 
 ## Screenshots
 
-<img src="https://github.com/javiorfo/img/blob/master/xtatusbar/xtatusbar.png?raw=true" alt="rustatusbar" />
+<img src="https://github.com/javiorfo/img/blob/master/xtatusbar/xtatusbar.png?raw=true" alt="rstatusbar" />
 
 ---
 

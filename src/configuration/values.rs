@@ -33,7 +33,7 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
     let config_path = format!(
         "{}{}",
         home_path.to_string_lossy(),
-        "/.config/rustatusbar/config.toml"
+        "/.config/rstatusbar/config.toml"
     );
 
     if let Ok(toml) = fs::read_to_string(config_path) {
@@ -150,7 +150,7 @@ mod tests {
         let home_path = dir.path().to_str().unwrap();
         env::set_var("HOME", home_path);
 
-        let config_dir = format!("{}/.config/rustatusbar", home_path);
+        let config_dir = format!("{}/.config/rstatusbar", home_path);
         fs::create_dir_all(&config_dir).unwrap();
 
         let config_path = format!("{}/config.toml", config_dir);
@@ -180,7 +180,7 @@ mod tests {
         let home_path = dir.path().to_str().unwrap();
         env::set_var("HOME", home_path);
 
-        let config_dir = format!("{}/.config/rustatusbar", home_path);
+        let config_dir = format!("{}/.config/rstatusbar", home_path);
         fs::create_dir_all(&config_dir).unwrap();
 
         let config_path = format!("{}/config.toml", config_dir);

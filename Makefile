@@ -5,7 +5,7 @@ VERSION = 0.1.0
 CARGO := cargo
 TARGET := target/release
 INSTALL_DIR := /usr/local/bin
-BINARY := rustatusbar
+BINARY := rstatusbar
 
 all: build
 

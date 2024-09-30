@@ -849,7 +849,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rustatusbar"
+name = "rstatusbar"
 version = "0.1.0"
 dependencies = [
  "alsa",
