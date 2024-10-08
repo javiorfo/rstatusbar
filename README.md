@@ -6,12 +6,17 @@
 - This library has been developed on and for Linux following open source philosophy.
 
 ## Installation
-- First step:
+- Downloading and compiling manually:
 ```bash
 git clone https://github.com/javiorfo/rstatusbar
 cd rstatusbar
 sudo make clean install
 ```
+- Using cargo:
+```bash
+cargo install rstatusbar
+```
+
 
 - In your **~/.xinitrc** to start in every login
 ```bash
@@ -36,6 +41,13 @@ rstatusbar & 2> rstatusbar_error.log
 ## Customizable
 - By default the statusbar contains: **cpu usage, memory usage, temperature, disk usage, volume, network status and datetime**
 - For a custom configuration put this file [config.toml](https://github.com/javiorfo/rstatusbar/blob/master/examples/config.toml) in your `~/.config/rstatusbar/config.toml` and edit it to change values or delete a component.
+- Memory component example in config.toml:
+```toml
+[memory]
+time = 1000  # Time in miliseconds defines how often the process runs
+name = "RAM" # Name of the component. Could be empty => name = ""
+icon = " "  # Icon of the component. Could be empty => icon = ""
+```
 
 ## Screenshots
 

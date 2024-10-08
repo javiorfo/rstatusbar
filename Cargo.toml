@@ -1,8 +1,13 @@
 [package]
 name = "rstatusbar"
 version = "0.1.0"
-license-file = "LICENSE"
+description = "Configurable statusbar for Xorg server using xsetroot"
+authors = ["Javier Orfo <javierorfo@protonmail.com>"]
+license = "MIT"
 edition = "2021"
+repository = "https://github.com/javiorfo/rstatusbar"
+homepage = "https://github.com/javiorfo/rstatusbar#readme"
+keywords = ["statusbar", "xorg", "xsetroot"]
 
 [dependencies]
 sysinfo = { version = "0.30.11", default-features = false }
