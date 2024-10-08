@@ -17,7 +17,7 @@ sudo make clean install
 cargo install rstatusbar
 ```
 
-
+## Setup
 - In your **~/.xinitrc** to start in every login
 ```bash
 rstatusbar & 2> rstatusbar_error.log
@@ -46,7 +46,7 @@ rstatusbar & 2> rstatusbar_error.log
 [memory]
 time = 1000  # Time in miliseconds defines how often the process runs
 name = "RAM" # Name of the component. Could be empty => name = ""
-icon = " "  # Icon of the component. Could be empty => icon = ""
+icon = ""   # Icon of the component. Could be empty => icon = ""
 ```
 
 ## Screenshots
