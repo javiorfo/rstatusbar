@@ -1,6 +1,6 @@
 [package]
 name = "rstatusbar"
-version = "0.1.0"
+version = "0.1.1"
 description = "Configurable statusbar for Xorg server using xsetroot"
 authors = ["Javier Orfo <javierorfo@protonmail.com>"]
 license = "MIT"

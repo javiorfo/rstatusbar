@@ -28,7 +28,9 @@ impl Converter for Weather {
             .map_err(anyhow::Error::msg)?;
 
         let temp = if output.status.success() {
-            String::from_utf8_lossy(&output.stdout).to_string()
+            let mut res = String::from_utf8_lossy(&output.stdout).to_string().replace("+", "");
+            res.truncate(4);
+            res
         } else {
             String::from("-")
         };
@@ -77,6 +79,7 @@ mod tests {
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON);
         assert!(!component.value.is_empty());
+        assert!(component.value.len() > 3);
     }
 
     #[test]

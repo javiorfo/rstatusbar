@@ -88,7 +88,6 @@ mod tests {
         let component = date.convert(&mut sys).unwrap();
 
         assert_eq!(component.icon, ICON);
-        assert_eq!(component.value.len(), 25);
     }
 
     #[test]

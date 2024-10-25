@@ -1,6 +1,3 @@
-# Version
-VERSION = 0.1.0
-
 # Variables
 CARGO := cargo
 TARGET := target/release
