@@ -17,6 +17,11 @@ sudo make clean install
 cargo install rstatusbar
 ```
 
+- Using yay or paru (AUR Arch Linux):
+```bash
+yay -S rstatusbar
+```
+
 ## Setup
 - In your **~/.xinitrc** to start in every login
 ```bash
