@@ -39,7 +39,7 @@ impl Converter for Disk {
         })
     }
 
-    fn get_time(&self) -> u64 {
+    fn time(&self) -> u64 {
         self.time.unwrap_or(TIME)
     }
 }
@@ -68,10 +68,10 @@ mod tests {
             icon: None,
             unit: None,
         };
-        assert_eq!(disk.get_time(), 3000);
+        assert_eq!(disk.time(), 3000);
 
         let disk_default = Disk::default();
-        assert_eq!(disk_default.get_time(), TIME);
+        assert_eq!(disk_default.time(), TIME);
     }
 
     #[test]

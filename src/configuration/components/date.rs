@@ -31,7 +31,7 @@ impl Converter for Date {
         })
     }
 
-    fn get_time(&self) -> u64 {
+    fn time(&self) -> u64 {
         self.time.unwrap_or(TIME)
     }
 }
@@ -57,10 +57,10 @@ mod tests {
             format: None,
             icon: None,
         };
-        assert_eq!(date.get_time(), 2000);
+        assert_eq!(date.time(), 2000);
 
         let date_default = Date::default();
-        assert_eq!(date_default.get_time(), TIME);
+        assert_eq!(date_default.time(), TIME);
     }
 
     #[test]

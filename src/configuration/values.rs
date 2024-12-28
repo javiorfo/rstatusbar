@@ -10,7 +10,7 @@ use super::components::script::Script;
 use super::components::volume::Volume;
 use super::components::weather::Weather;
 use super::components::{cpu::Cpu, disk::Disk, memory::Memory, temperature::Temperature};
-use super::converter::Converter;
+use super::converter::Device;
 
 #[derive(Deserialize, Debug)]
 struct Config {
@@ -27,7 +27,7 @@ struct Config {
     pub date: Option<Date>,
 }
 
-pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
+pub fn get_configuration() -> (General, Vec<Device>) {
     let home_path = std::env::var_os("HOME").expect("No HOME variable set.");
 
     let config_path = format!(
@@ -38,37 +38,37 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
 
     if let Ok(toml) = fs::read_to_string(config_path) {
         let config: Config = from_str(&toml).expect("Error parsing TOML");
-        let mut values: Vec<Box<dyn Converter>> = Vec::new();
+        let mut values: Vec<Device> = Vec::new();
 
         if config.cpu.is_some() {
-            values.push(Box::new(config.cpu.unwrap()));
+            values.push(Device::Cpu(config.cpu.unwrap()));
         }
         if config.memory.is_some() {
-            values.push(Box::new(config.memory.unwrap()));
+            values.push(Device::Memory(config.memory.unwrap()));
         }
         if config.temperature.is_some() {
-            values.push(Box::new(config.temperature.unwrap()));
+            values.push(Device::Temperature(config.temperature.unwrap()));
         }
         if config.disk.is_some() {
-            values.push(Box::new(config.disk.unwrap()));
+            values.push(Device::Disk(config.disk.unwrap()));
         }
         if config.volume.is_some() {
-            values.push(Box::new(config.volume.unwrap()));
+            values.push(Device::Volume(config.volume.unwrap()));
         }
         if config.network.is_some() {
-            values.push(Box::new(config.network.unwrap()));
+            values.push(Device::Network(config.network.unwrap()));
         }
         if config.battery.is_some() {
-            values.push(Box::new(config.battery.unwrap()));
+            values.push(Device::Battery(config.battery.unwrap()));
         }
         if config.script.is_some() {
-            values.push(Box::new(config.script.unwrap()));
+            values.push(Device::Script(config.script.unwrap()));
         }
         if config.weather.is_some() {
-            values.push(Box::new(config.weather.unwrap()));
+            values.push(Device::Weather(config.weather.unwrap()));
         }
         if config.date.is_some() {
-            values.push(Box::new(config.date.unwrap()));
+            values.push(Device::Date(config.date.unwrap()));
         }
 
         (config.general.unwrap_or_default(), values)
@@ -76,13 +76,13 @@ pub fn get_configuration() -> (General, Vec<Box<dyn Converter>>) {
         (
             General::default(),
             vec![
-                Box::new(Cpu::default()),
-                Box::new(Memory::default()),
-                Box::new(Temperature::default()),
-                Box::new(Disk::default()),
-                Box::new(Volume::default()),
-                Box::new(Network::default()),
-                Box::new(Date::default()),
+                Device::Cpu(Cpu::default()),
+                Device::Memory(Memory::default()),
+                Device::Temperature(Temperature::default()),
+                Device::Disk(Disk::default()),
+                Device::Volume(Volume::default()),
+                Device::Network(Network::default()),
+                Device::Date(Date::default()),
             ],
         )
     }

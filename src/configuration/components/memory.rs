@@ -29,7 +29,7 @@ impl Converter for Memory {
         })
     }
 
-    fn get_time(&self) -> u64 {
+    fn time(&self) -> u64 {
         self.time.unwrap_or(TIME)
     }
 }
@@ -56,10 +56,10 @@ mod tests {
             name: None,
             icon: None,
         };
-        assert_eq!(memory.get_time(), 2000);
+        assert_eq!(memory.time(), 2000);
 
         let memory_default = Memory::default();
-        assert_eq!(memory_default.get_time(), TIME);
+        assert_eq!(memory_default.time(), TIME);
     }
 
     #[test]
