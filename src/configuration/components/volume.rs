@@ -61,7 +61,7 @@ impl Converter for Volume {
         })
     }
 
-    fn get_time(&self) -> u64 {
+    fn time(&self) -> u64 {
         self.time.unwrap_or(TIME)
     }
 }
@@ -90,10 +90,10 @@ mod tests {
             icon_active: None,
             icon_muted: None,
         };
-        assert_eq!(volume.get_time(), 200);
+        assert_eq!(volume.time(), 200);
 
         let volume_default = Volume::default();
-        assert_eq!(volume_default.get_time(), TIME);
+        assert_eq!(volume_default.time(), TIME);
     }
 
     #[test]

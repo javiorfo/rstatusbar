@@ -29,7 +29,7 @@ impl Converter for Cpu {
         })
     }
 
-    fn get_time(&self) -> u64 {
+    fn time(&self) -> u64 {
         self.time.unwrap_or(TIME)
     }
 }
@@ -56,10 +56,10 @@ mod tests {
             name: None,
             icon: None,
         };
-        assert_eq!(cpu.get_time(), 2000);
+        assert_eq!(cpu.time(), 2000);
 
         let cpu_default = Cpu::default();
-        assert_eq!(cpu_default.get_time(), TIME);
+        assert_eq!(cpu_default.time(), TIME);
     }
 
     #[test]

@@ -40,7 +40,7 @@ impl Converter for Network {
         })
     }
 
-    fn get_time(&self) -> u64 {
+    fn time(&self) -> u64 {
         self.time.unwrap_or(TIME)
     }
 }
@@ -69,10 +69,10 @@ mod tests {
             icon_up: None,
             icon_down: None,
         };
-        assert_eq!(network.get_time(), 2000);
+        assert_eq!(network.time(), 2000);
 
         let network_default = Network::default();
-        assert_eq!(network_default.get_time(), TIME);
+        assert_eq!(network_default.time(), TIME);
     }
 
     #[test]

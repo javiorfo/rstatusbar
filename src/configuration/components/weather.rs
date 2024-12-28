@@ -42,7 +42,7 @@ impl Converter for Weather {
         })
     }
 
-    fn get_time(&self) -> u64 {
+    fn time(&self) -> u64 {
         self.time.unwrap_or(TIME)
     }
 }

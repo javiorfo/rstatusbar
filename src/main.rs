@@ -4,7 +4,7 @@ use std::thread;
 use std::time::Duration;
 
 use configuration::components::general::General;
-use configuration::converter::Converter;
+use configuration::converter::Device;
 use configuration::values::get_configuration;
 use sysinfo::System;
 mod component;
@@ -25,10 +25,11 @@ fn main() {
     create_statusbar(general, values);
 }
 
-fn create_component(cache: Arc<Mutex<String>>, converter: Box<dyn Converter>) {
+fn create_component(cache: Arc<Mutex<String>>, device: Device) {
     let mut sys = System::new_all();
     thread::spawn(move || loop {
-        match converter.convert(&mut sys) {
+        let (component, time) = device.apply(&mut sys);
+        match component {
             Ok(comp) => {
                 let result = format!("{}", comp);
                 match cache.clone().lock() {
@@ -41,7 +42,7 @@ fn create_component(cache: Arc<Mutex<String>>, converter: Box<dyn Converter>) {
                     }
                 }
 
-                thread::sleep(Duration::from_millis(converter.get_time()));
+                thread::sleep(Duration::from_millis(time));
             }
             Err(e) => {
                 eprintln!("Converter error: {}", e);

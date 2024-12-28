@@ -30,7 +30,7 @@ impl Converter for Temperature {
         })
     }
 
-    fn get_time(&self) -> u64 {
+    fn time(&self) -> u64 {
         self.time.unwrap_or(TIME)
     }
 }
@@ -57,10 +57,10 @@ mod tests {
             name: None,
             icon: None,
         };
-        assert_eq!(temperature.get_time(), 2000);
+        assert_eq!(temperature.time(), 2000);
 
         let temperature_default = Temperature::default();
-        assert_eq!(temperature_default.get_time(), TIME);
+        assert_eq!(temperature_default.time(), TIME);
     }
 
     #[test]
