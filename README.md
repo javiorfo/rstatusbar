@@ -1,6 +1,9 @@
 # rstatusbar
 *Configurable statusbar in Rust for Xorg server using xsetroot*
 
+# ⚠️ Attention
+## This project is no longer maintained in favor of [ztatusbar](https://github.com/javiorfo/ztatusbar)
+
 ## Caveats
 - Dependencies: `rust`, `xorg-xsetroot`, `curl`
 - This library has been developed on and for Linux following open source philosophy.
