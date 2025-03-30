@@ -40,35 +40,35 @@ pub fn get_configuration() -> (General, Vec<Device>) {
         let config: Config = from_str(&toml).expect("Error parsing TOML");
         let mut values: Vec<Device> = Vec::new();
 
-        if config.cpu.is_some() {
-            values.push(Device::Cpu(config.cpu.unwrap()));
+        if let Some(value) = config.cpu {
+            values.push(Device::Cpu(value));
         }
-        if config.memory.is_some() {
-            values.push(Device::Memory(config.memory.unwrap()));
+        if let Some(value) = config.memory {
+            values.push(Device::Memory(value));
         }
-        if config.temperature.is_some() {
-            values.push(Device::Temperature(config.temperature.unwrap()));
+        if let Some(value) = config.temperature {
+            values.push(Device::Temperature(value));
         }
-        if config.disk.is_some() {
-            values.push(Device::Disk(config.disk.unwrap()));
+        if let Some(value) = config.disk {
+            values.push(Device::Disk(value));
         }
-        if config.volume.is_some() {
-            values.push(Device::Volume(config.volume.unwrap()));
+        if let Some(value) = config.volume {
+            values.push(Device::Volume(value));
         }
-        if config.network.is_some() {
-            values.push(Device::Network(config.network.unwrap()));
+        if let Some(value) = config.network {
+            values.push(Device::Network(value));
         }
-        if config.battery.is_some() {
-            values.push(Device::Battery(config.battery.unwrap()));
+        if let Some(value) = config.battery {
+            values.push(Device::Battery(value));
         }
-        if config.script.is_some() {
-            values.push(Device::Script(config.script.unwrap()));
+        if let Some(value) = config.script {
+            values.push(Device::Script(value));
         }
-        if config.weather.is_some() {
-            values.push(Device::Weather(config.weather.unwrap()));
+        if let Some(value) = config.weather {
+            values.push(Device::Weather(value));
         }
-        if config.date.is_some() {
-            values.push(Device::Date(config.date.unwrap()));
+        if let Some(value) = config.date {
+            values.push(Device::Date(value));
         }
 
         (config.general.unwrap_or_default(), values)
