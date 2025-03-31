@@ -2,7 +2,7 @@ use chrono::Local;
 use serde::Deserialize;
 use sysinfo::System;
 
-use crate::{component::section::Component, configuration::converter::Converter};
+use crate::{component::section::Component, configuration::device::Converter};
 
 const FORMAT: &str = "%A %d/%m/%Y %H:%M";
 const ICON: &str = " ";

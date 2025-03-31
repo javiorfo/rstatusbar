@@ -2,7 +2,7 @@ use reqwest::blocking::get;
 use serde::Deserialize;
 use sysinfo::System;
 
-use crate::{component::section::Component, configuration::converter::Converter};
+use crate::{component::section::Component, configuration::device::Converter};
 
 const NAME: &str = "NET";
 const ICON_UP: &str = "󰀂 ";

@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use sysinfo::{Components, System};
 
-use crate::{component::section::Component, configuration::converter::Converter};
+use crate::{component::section::Component, configuration::device::Converter};
 
 const NAME: &str = "TEMP";
 const ICON: &str = "󰏈 ";

@@ -1,11 +1,6 @@
 # rstatusbar
 *Configurable statusbar in Rust for Xorg server using xsetroot*
 
-# ⚠️ Attention
-## This project is no longer maintained in favor of [ztatusbar](https://github.com/javiorfo/ztatusbar)
-- **rstatusbar:** CPU (average) 2.75% - Mem (average) 0.23%
-- **ztatusbar:** CPU (average) 2.02% - Mem (average) 0.08%
-  
 ## Caveats
 - Dependencies: `rust`, `xorg-xsetroot`, `curl`
 - This library has been developed on and for Linux following open source philosophy.
@@ -17,6 +12,7 @@ git clone https://github.com/javiorfo/rstatusbar
 cd rstatusbar
 sudo make clean install
 ```
+
 - Using cargo:
 ```bash
 cargo install rstatusbar
@@ -30,7 +26,7 @@ yay -S rstatusbar
 ## Setup
 - In your **~/.xinitrc** to start in every login
 ```bash
-rstatusbar & 2> rstatusbar_error.log
+rstatusbar 2> rstatusbar.log &
 ```
 
 ## Overview

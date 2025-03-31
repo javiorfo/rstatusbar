@@ -4,7 +4,7 @@ use std::thread;
 use std::time::Duration;
 
 use configuration::components::general::General;
-use configuration::converter::Device;
+use configuration::device::Device;
 use configuration::values::get_configuration;
 use sysinfo::System;
 mod component;

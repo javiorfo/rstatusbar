@@ -3,7 +3,7 @@ use std::process::Command;
 use serde::Deserialize;
 use sysinfo::System;
 
-use crate::{component::section::Component, configuration::converter::Converter};
+use crate::{component::section::Component, configuration::device::Converter};
 
 const NAME: &str = "WEA";
 const ICON: &str = " ";
@@ -28,7 +28,9 @@ impl Converter for Weather {
             .map_err(anyhow::Error::msg)?;
 
         let temp = if output.status.success() {
-            let mut res = String::from_utf8_lossy(&output.stdout).to_string().replace("+", "");
+            let mut res = String::from_utf8_lossy(&output.stdout)
+                .to_string()
+                .replace("+", "");
             res.truncate(5);
             res
         } else {
@@ -53,7 +55,7 @@ impl Default for Weather {
             time: Some(TIME),
             name: Some(String::from(NAME)),
             icon: Some(String::from(ICON)),
-            location: String::from("")
+            location: String::from(""),
         }
     }
 }
@@ -95,4 +97,3 @@ mod tests {
         assert!(!component.value.is_empty());
     }
 }
-

@@ -10,7 +10,7 @@ use super::components::script::Script;
 use super::components::volume::Volume;
 use super::components::weather::Weather;
 use super::components::{cpu::Cpu, disk::Disk, memory::Memory, temperature::Temperature};
-use super::converter::Device;
+use super::device::{Converter, Device};
 
 #[derive(Deserialize, Debug)]
 struct Config {
@@ -40,36 +40,16 @@ pub fn get_configuration() -> (General, Vec<Device>) {
         let config: Config = from_str(&toml).expect("Error parsing TOML");
         let mut values: Vec<Device> = Vec::new();
 
-        if let Some(value) = config.cpu {
-            values.push(Device::Cpu(value));
-        }
-        if let Some(value) = config.memory {
-            values.push(Device::Memory(value));
-        }
-        if let Some(value) = config.temperature {
-            values.push(Device::Temperature(value));
-        }
-        if let Some(value) = config.disk {
-            values.push(Device::Disk(value));
-        }
-        if let Some(value) = config.volume {
-            values.push(Device::Volume(value));
-        }
-        if let Some(value) = config.network {
-            values.push(Device::Network(value));
-        }
-        if let Some(value) = config.battery {
-            values.push(Device::Battery(value));
-        }
-        if let Some(value) = config.script {
-            values.push(Device::Script(value));
-        }
-        if let Some(value) = config.weather {
-            values.push(Device::Weather(value));
-        }
-        if let Some(value) = config.date {
-            values.push(Device::Date(value));
-        }
+        add_device(config.cpu, &mut values, Device::Cpu);
+        add_device(config.memory, &mut values, Device::Memory);
+        add_device(config.temperature, &mut values, Device::Temperature);
+        add_device(config.disk, &mut values, Device::Disk);
+        add_device(config.volume, &mut values, Device::Volume);
+        add_device(config.network, &mut values, Device::Network);
+        add_device(config.battery, &mut values, Device::Battery);
+        add_device(config.script, &mut values, Device::Script);
+        add_device(config.weather, &mut values, Device::Weather);
+        add_device(config.date, &mut values, Device::Date);
 
         (config.general.unwrap_or_default(), values)
     } else {
@@ -85,6 +65,16 @@ pub fn get_configuration() -> (General, Vec<Device>) {
                 Device::Date(Date::default()),
             ],
         )
+    }
+}
+
+fn add_device<T, F>(h: Option<T>, v: &mut Vec<Device>, f: F)
+where
+    T: Converter,
+    F: Fn(T) -> Device,
+{
+    if let Some(value) = h {
+        v.push(f(value));
     }
 }
 

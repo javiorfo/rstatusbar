@@ -2,6 +2,7 @@
 name = "rstatusbar"
 version = "0.2.1"
 description = "Configurable statusbar for Xorg server using xsetroot"
+authors = ["Javier Orfo <javierorfo@protonmail.com>"]
 license = "MIT"
 edition = "2021"
 repository = "https://github.com/javiorfo/rstatusbar"

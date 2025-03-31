@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use sysinfo::System;
 
-use crate::{component::section::Component, configuration::converter::Converter};
+use crate::{component::section::Component, configuration::device::Converter};
 
 const NAME: &str = "CPU";
 const ICON: &str = " ";
