@@ -3,7 +3,6 @@ use alsa::{
     Mixer,
 };
 use serde::Deserialize;
-use sysinfo::System;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
@@ -22,7 +21,7 @@ pub struct Volume {
 }
 
 impl Converter for Volume {
-    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
         let mixer = Mixer::new("default", false).map_err(anyhow::Error::msg)?;
 
         let selem_id = SelemId::new("Master", 0);
@@ -80,7 +79,6 @@ impl Default for Volume {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sysinfo::System;
 
     #[test]
     fn test_volume_get_time() {
@@ -98,10 +96,8 @@ mod tests {
 
     #[test]
     fn test_volume_convert() {
-        let mut sys = System::new_all();
-
         let volume = Volume::default();
-        let component = volume.convert(&mut sys).unwrap();
+        let component = volume.convert().unwrap();
 
         assert_eq!(component.name, NAME);
         assert!(component.icon == ICON_ACTIVE || component.icon == ICON_MUTED);

@@ -1,5 +1,3 @@
-use sysinfo::System;
-
 use crate::component::section::Component;
 
 use super::components::{
@@ -21,23 +19,23 @@ pub enum Device {
 }
 
 impl Device {
-    pub fn apply(&self, sys: &mut System) -> (anyhow::Result<Component>, u64) {
+    pub fn apply(&self) -> (anyhow::Result<Component>, u64) {
         match self {
-            Device::Battery(d) => (d.convert(sys), d.time()),
-            Device::Cpu(d) => (d.convert(sys), d.time()),
-            Device::Date(d) => (d.convert(sys), d.time()),
-            Device::Disk(d) => (d.convert(sys), d.time()),
-            Device::Memory(d) => (d.convert(sys), d.time()),
-            Device::Network(d) => (d.convert(sys), d.time()),
-            Device::Script(d) => (d.convert(sys), d.time()),
-            Device::Temperature(d) => (d.convert(sys), d.time()),
-            Device::Volume(d) => (d.convert(sys), d.time()),
-            Device::Weather(d) => (d.convert(sys), d.time()),
+            Device::Battery(d) => (d.convert(), d.time()),
+            Device::Cpu(d) => (d.convert(), d.time()),
+            Device::Date(d) => (d.convert(), d.time()),
+            Device::Disk(d) => (d.convert(), d.time()),
+            Device::Memory(d) => (d.convert(), d.time()),
+            Device::Network(d) => (d.convert(), d.time()),
+            Device::Script(d) => (d.convert(), d.time()),
+            Device::Temperature(d) => (d.convert(), d.time()),
+            Device::Volume(d) => (d.convert(), d.time()),
+            Device::Weather(d) => (d.convert(), d.time()),
         }
     }
 }
 
 pub trait Converter: Send {
-    fn convert(&self, sys: &mut System) -> anyhow::Result<Component>;
+    fn convert(&self) -> anyhow::Result<Component>;
     fn time(&self) -> u64;
 }

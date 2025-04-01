@@ -6,7 +6,6 @@ use std::time::Duration;
 use configuration::components::general::General;
 use configuration::device::Device;
 use configuration::values::get_configuration;
-use sysinfo::System;
 mod component;
 mod configuration;
 
@@ -26,9 +25,8 @@ fn main() {
 }
 
 fn create_component(cache: Arc<Mutex<String>>, device: Device) {
-    let mut sys = System::new_all();
     thread::spawn(move || loop {
-        let (component, time) = device.apply(&mut sys);
+        let (component, time) = device.apply();
         match component {
             Ok(comp) => {
                 let result = format!("{}", comp);

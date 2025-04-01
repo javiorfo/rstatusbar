@@ -17,7 +17,8 @@ pub struct Disk {
 }
 
 impl Converter for Disk {
-    fn convert(&self, sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
+        let mut sys = System::new();
         sys.refresh_all();
         let disk = Disks::new_with_refreshed_list();
         let selected_disk = disk
@@ -76,10 +77,6 @@ mod tests {
 
     #[test]
     fn test_disk_convert() {
-        let mut sys = System::new_all();
-
-        sys.refresh_all();
-
         let disk = Disk {
             time: Some(2000),
             name: Some(String::from("Custom Disk")),
@@ -87,7 +84,7 @@ mod tests {
             unit: Some(String::from("/")),
         };
 
-        let component = disk.convert(&mut sys).unwrap();
+        let component = disk.convert().unwrap();
 
         assert_eq!(component.name, "Custom Disk");
         assert_eq!(component.icon, ICON);
@@ -96,13 +93,9 @@ mod tests {
 
     #[test]
     fn test_disk_convert_with_default_values() {
-        let mut sys = System::new_all();
-
-        sys.refresh_all();
-
         let disk = Disk::default();
 
-        let component = disk.convert(&mut sys).unwrap();
+        let component = disk.convert().unwrap();
 
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON);
@@ -122,7 +115,7 @@ mod tests {
             unit: Some(String::from("invalid_unit")),
         };
 
-        let result = disk.convert(&mut sys);
+        let result = disk.convert();
 
         assert!(result.is_err());
     }

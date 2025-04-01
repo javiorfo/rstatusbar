@@ -1,7 +1,6 @@
 use std::fs;
 
 use serde::Deserialize;
-use sysinfo::System;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
@@ -23,7 +22,7 @@ pub struct Battery {
 }
 
 impl Converter for Battery {
-    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
         let battery_percentage = fs::read_to_string(self.path.clone().unwrap_or(PATH.to_string()))
             .map_err(anyhow::Error::msg)?;
 
@@ -88,7 +87,7 @@ mod tests {
             ..Default::default()
         };
 
-        let component = battery.convert(&mut System::new()).unwrap();
+        let component = battery.convert().unwrap();
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON_FULL);
         assert_eq!(component.value, "90%");
@@ -106,7 +105,7 @@ mod tests {
             ..Default::default()
         };
 
-        let component = battery.convert(&mut System::new()).unwrap();
+        let component = battery.convert().unwrap();
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON_MEDIUM);
         assert_eq!(component.value, "50%");
@@ -124,7 +123,7 @@ mod tests {
             ..Default::default()
         };
 
-        let component = battery.convert(&mut System::new()).unwrap();
+        let component = battery.convert().unwrap();
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON_LOW);
         assert_eq!(component.value, "20%");
@@ -142,7 +141,7 @@ mod tests {
             ..Default::default()
         };
 
-        let result = battery.convert(&mut System::new());
+        let result = battery.convert();
         assert!(result.is_err());
     }
 }

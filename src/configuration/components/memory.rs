@@ -15,7 +15,8 @@ pub struct Memory {
 }
 
 impl Converter for Memory {
-    fn convert(&self, sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
+        let mut sys = System::new();
         sys.refresh_memory();
         let memory_perc = (sys.used_memory() as f32 / sys.total_memory() as f32) * 100.0;
         let total = format!("{:.0}%", memory_perc);
@@ -47,7 +48,6 @@ impl Default for Memory {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sysinfo::System;
 
     #[test]
     fn test_memory_get_time() {
@@ -64,17 +64,13 @@ mod tests {
 
     #[test]
     fn test_memory_convert() {
-        let mut sys = System::new_all();
-
-        sys.refresh_memory();
-
         let memory = Memory {
             time: Some(1000),
             name: Some(String::from("Custom RAM")),
             icon: Some(String::from(ICON)),
         };
 
-        let component = memory.convert(&mut sys).unwrap();
+        let component = memory.convert().unwrap();
 
         assert_eq!(component.name, "Custom RAM");
         assert_eq!(component.icon, ICON);
@@ -83,13 +79,9 @@ mod tests {
 
     #[test]
     fn test_memory_convert_with_default_values() {
-        let mut sys = System::new_all();
-
-        sys.refresh_memory();
-
         let memory = Memory::default();
 
-        let component = memory.convert(&mut sys).unwrap();
+        let component = memory.convert().unwrap();
 
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON);

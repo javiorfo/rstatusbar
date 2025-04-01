@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use sysinfo::{Components, System};
+use sysinfo::Components;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
@@ -15,7 +15,7 @@ pub struct Temperature {
 }
 
 impl Converter for Temperature {
-    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
         let components = Components::new_with_refreshed_list();
         let total = components.iter().map(|c| c.temperature()).sum::<f32>();
         let total = total as usize / components.len();
@@ -48,7 +48,6 @@ impl Default for Temperature {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sysinfo::System;
 
     #[test]
     fn test_temperature_get_time() {
@@ -65,17 +64,13 @@ mod tests {
 
     #[test]
     fn test_temperature_convert() {
-        let mut sys = System::new_all();
-
-        sys.refresh_all();
-
         let temperature = Temperature {
             time: Some(1000),
             name: Some(String::from("Current Temperature")),
             icon: Some(String::from(ICON)),
         };
 
-        let component = temperature.convert(&mut sys).unwrap();
+        let component = temperature.convert().unwrap();
 
         assert_eq!(component.name, "Current Temperature");
         assert_eq!(component.icon, ICON);

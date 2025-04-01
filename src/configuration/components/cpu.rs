@@ -15,7 +15,8 @@ pub struct Cpu {
 }
 
 impl Converter for Cpu {
-    fn convert(&self, sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
+        let mut sys = System::new();
         sys.refresh_cpu_usage();
         let total = sys.global_cpu_info().cpu_usage() as usize;
         let total = format!("{}%", total);
@@ -47,7 +48,6 @@ impl Default for Cpu {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sysinfo::System;
 
     #[test]
     fn test_cpu_get_time() {
@@ -64,15 +64,13 @@ mod tests {
 
     #[test]
     fn test_cpu_convert() {
-        let mut sys = System::new_all();
-
         let cpu = Cpu {
             time: Some(1000),
             name: Some(String::from("Custom CPU")),
             icon: Some(String::from(ICON)),
         };
 
-        let component = cpu.convert(&mut sys).unwrap();
+        let component = cpu.convert().unwrap();
 
         assert_eq!(component.name, "Custom CPU");
         assert_eq!(component.icon, ICON);
@@ -81,11 +79,9 @@ mod tests {
 
     #[test]
     fn test_cpu_convert_with_default_values() {
-        let mut sys = System::new_all();
-
         let cpu = Cpu::default();
 
-        let component = cpu.convert(&mut sys).unwrap();
+        let component = cpu.convert().unwrap();
 
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON);

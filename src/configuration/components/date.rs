@@ -1,6 +1,5 @@
 use chrono::Local;
 use serde::Deserialize;
-use sysinfo::System;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
@@ -16,7 +15,7 @@ pub struct Date {
 }
 
 impl Converter for Date {
-    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
         let date_time = Local::now();
         let formatted = format!(
             "{}",
@@ -65,15 +64,13 @@ mod tests {
 
     #[test]
     fn test_date_convert() {
-        let mut sys = System::new_all();
-
         let date = Date {
             time: Some(1000),
             format: Some(String::from("%Y-%m-%d")),
             icon: Some(String::from(ICON)),
         };
 
-        let component = date.convert(&mut sys).unwrap();
+        let component = date.convert().unwrap();
 
         assert_eq!(component.icon, ICON);
         assert_eq!(component.value.len(), 10);
@@ -81,26 +78,22 @@ mod tests {
 
     #[test]
     fn test_date_convert_with_default_values() {
-        let mut sys = System::new_all();
-
         let date = Date::default();
 
-        let component = date.convert(&mut sys).unwrap();
+        let component = date.convert().unwrap();
 
         assert_eq!(component.icon, ICON);
     }
 
     #[test]
     fn test_date_convert_with_invalid_format() {
-        let mut sys = System::new_all();
-
         let date = Date {
             time: Some(1000),
             format: Some(String::from("invalid_format")),
             icon: Some(String::from(ICON)),
         };
 
-        let component = date.convert(&mut sys).unwrap();
+        let component = date.convert().unwrap();
 
         assert_eq!(component.icon, ICON);
         assert!(!component.value.is_empty());

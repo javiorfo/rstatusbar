@@ -1,7 +1,6 @@
 use std::process::Command;
 
 use serde::Deserialize;
-use sysinfo::System;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
@@ -18,7 +17,7 @@ pub struct Weather {
 }
 
 impl Converter for Weather {
-    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
         let name = self.name.as_deref().unwrap_or(NAME);
         let icon = self.icon.as_deref().unwrap_or(ICON);
 
@@ -63,7 +62,6 @@ impl Default for Weather {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sysinfo::System;
 
     #[test]
     fn test_convert_success() {
@@ -74,9 +72,7 @@ mod tests {
             location: String::from("Buenos+Aires"),
         };
 
-        let mut sys = System::new_all();
-
-        let component = weather.convert(&mut sys).unwrap();
+        let component = weather.convert().unwrap();
 
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON);
@@ -88,9 +84,7 @@ mod tests {
     fn test_convert_failure() {
         let weather = Weather::default();
 
-        let mut sys = System::new_all();
-
-        let component = weather.convert(&mut sys).unwrap();
+        let component = weather.convert().unwrap();
 
         assert_eq!(component.name, NAME);
         assert_eq!(component.icon, ICON);

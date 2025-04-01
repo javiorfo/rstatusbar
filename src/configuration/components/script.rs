@@ -1,7 +1,6 @@
 use std::process::Command;
 
 use serde::Deserialize;
-use sysinfo::System;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
@@ -18,7 +17,7 @@ pub struct Script {
 }
 
 impl Converter for Script {
-    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
         let name = self.name.as_deref().unwrap_or(NAME);
         let icon = self.icon.as_deref().unwrap_or(ICON);
 
@@ -80,8 +79,7 @@ mod tests {
             path: String::from(script_path),
         };
 
-        let mut sys = System::new_all();
-        let component = script.convert(&mut sys).unwrap();
+        let component = script.convert().unwrap();
 
         assert_eq!(component.name, "Test Script");
         assert_eq!(component.icon, ICON);
@@ -99,8 +97,7 @@ mod tests {
             path: String::from("/nonexistent/path"),
         };
 
-        let mut sys = System::new_all();
-        let component = script.convert(&mut sys).unwrap();
+        let component = script.convert().unwrap();
 
         assert!(component.value.contains("Error"));
     }

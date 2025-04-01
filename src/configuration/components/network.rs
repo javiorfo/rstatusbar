@@ -1,6 +1,5 @@
 use reqwest::blocking::get;
 use serde::Deserialize;
-use sysinfo::System;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
@@ -19,7 +18,7 @@ pub struct Network {
 }
 
 impl Converter for Network {
-    fn convert(&self, _sys: &mut System) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component> {
         let icon = match get(URL) {
             Ok(resp) => {
                 if resp.status().is_success() {
@@ -59,7 +58,6 @@ impl Default for Network {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sysinfo::System;
 
     #[test]
     fn test_network_get_time() {
@@ -84,7 +82,7 @@ mod tests {
             icon_down: Some(String::from(ICON_DOWN)),
         };
 
-        let component = network.convert(&mut System::new_all()).unwrap();
+        let component = network.convert().unwrap();
 
         assert_eq!(component.name, "Custom Network");
         assert_eq!(component.icon, ICON_UP);

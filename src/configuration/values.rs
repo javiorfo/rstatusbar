@@ -71,7 +71,7 @@ pub fn get_configuration() -> (General, Vec<Device>) {
 fn add_device<T, F>(h: Option<T>, v: &mut Vec<Device>, f: F)
 where
     T: Converter,
-    F: Fn(T) -> Device,
+    F: FnOnce(T) -> Device,
 {
     if let Some(value) = h {
         v.push(f(value));
