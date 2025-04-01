@@ -6,13 +6,6 @@
 - This library has been developed on and for Linux following open source philosophy.
 
 ## Installation
-- Downloading and compiling manually:
-```bash
-git clone https://github.com/javiorfo/rstatusbar
-cd rstatusbar
-sudo make clean install
-```
-
 - Using cargo:
 ```bash
 cargo install rstatusbar
