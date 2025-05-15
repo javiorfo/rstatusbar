@@ -5,7 +5,7 @@
 ## This project is no longer maintained in favor of [ztatusbar](https://github.com/javiorfo/ztatusbar)
 #### Test with Intel i7 (8 cores) and 12Gb mem
 - **rstatusbar:** CPU (average) 3.25% - Mem (average) 0.23%
-- **ztatusbar:** CPU (average) 2.02% - Mem (average) 0.08%
+- **ztatusbar:** CPU (average) 2.02% - Mem (average) 0.05%
 
 ## Caveats
 - Dependencies: `rust`, `xorg-xsetroot`, `curl`
