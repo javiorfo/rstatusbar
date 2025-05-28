@@ -2,7 +2,7 @@
 *Configurable statusbar in Rust for Xorg server using xsetroot*
 
 ## Caveats
-- Dependencies: `rust`, `xorg-xsetroot`, `curl`
+- Dependencies: `rust`, `xorg-xsetroot`
 - This library has been developed on and for Linux following open source philosophy.
 
 ## Installation
@@ -13,7 +13,7 @@ cargo install rstatusbar
 
 - Using yay or paru (AUR Arch Linux):
 ```bash
-yay -S rstatusbar
+paru -S rstatusbar
 ```
 
 ## Setup
