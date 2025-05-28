@@ -1,4 +1,7 @@
-use std::{net::{SocketAddr, TcpStream}, time::Duration};
+use std::{
+    net::{SocketAddr, TcpStream},
+    time::Duration,
+};
 
 use serde::Deserialize;
 
@@ -24,8 +27,12 @@ impl Converter for Network {
         let timeout = Duration::from_secs(60);
         let icon = match TcpStream::connect_timeout(&address, timeout) {
             Ok(stream) => {
-                stream.set_read_timeout(Some(timeout)).map_err(anyhow::Error::msg)?;
-                stream.set_write_timeout(Some(timeout)).map_err(anyhow::Error::msg)?;
+                stream
+                    .set_read_timeout(Some(timeout))
+                    .map_err(anyhow::Error::msg)?;
+                stream
+                    .set_write_timeout(Some(timeout))
+                    .map_err(anyhow::Error::msg)?;
                 self.icon_up.as_deref().unwrap_or(ICON_UP)
             }
             Err(_) => self.icon_down.as_deref().unwrap_or(ICON_DOWN),

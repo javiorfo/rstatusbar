@@ -15,9 +15,10 @@ icon = " "
 time = 1000
 name = "TEMP"
 icon = "󰏈 " 
+zone = 2
 
 [disk]
-time = 2000
+time = 5000
 name = "DISK"
 icon = "󰋊 "
 unit = "/"
@@ -48,11 +49,11 @@ icon_down = "󰯡 "
 # icon = "󰯁 ";
 # path = "/path/to/script.sh"
 
-# [weather]
-# time = 1800000
-# name = "WEA"
-# icon = " "
-# location = "Buenos+Aires"
+[weather]
+time = 1800000
+name = "WEA"
+icon = " "
+location = "Buenos+Aires"
 
 [date]
 time = 1000

@@ -58,7 +58,7 @@ impl Default for Script {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs::{metadata, remove_file, set_permissions, File};
+    use std::fs::{File, metadata, remove_file, set_permissions};
     use std::{io::Write, os::unix::fs::PermissionsExt};
 
     #[test]

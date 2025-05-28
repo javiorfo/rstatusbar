@@ -1,25 +1,33 @@
+use std::{fs, path::PathBuf};
+
 use serde::Deserialize;
-use sysinfo::Components;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
 const NAME: &str = "TEMP";
 const ICON: &str = "󰏈 ";
 const TIME: u64 = 1000;
+const ZONE: u8 = 0;
 
 #[derive(Deserialize, Debug)]
 pub struct Temperature {
     pub time: Option<u64>,
     pub name: Option<String>,
     pub icon: Option<String>,
+    pub zone: Option<u8>,
 }
 
 impl Converter for Temperature {
     fn convert(&self) -> anyhow::Result<Component> {
-        let components = Components::new_with_refreshed_list();
-        let total = components.iter().map(|c| c.temperature()).sum::<f32>();
-        let total = total as usize / components.len();
-        let total = format!("{}°C", total);
+        let path = PathBuf::from(format!(
+            "/sys/class/thermal/thermal_zone{}/temp",
+            self.zone.unwrap_or(ZONE)
+        ));
+
+        let contents = fs::read_to_string(path).map_err(anyhow::Error::msg)?;
+        let temp_milli: i64 = contents.trim().parse().map_err(anyhow::Error::msg)?;
+
+        let total = format!("{:.0}°C", temp_milli as f32 / 1000.0);
         let name = self.name.as_deref().unwrap_or(NAME);
         let icon = self.icon.as_deref().unwrap_or(ICON);
 
@@ -41,6 +49,7 @@ impl Default for Temperature {
             time: Some(TIME),
             name: Some(String::from(NAME)),
             icon: Some(String::from(ICON)),
+            zone: Some(0),
         }
     }
 }
@@ -55,6 +64,7 @@ mod tests {
             time: Some(2000),
             name: None,
             icon: None,
+            zone: None,
         };
         assert_eq!(temperature.time(), 2000);
 
@@ -68,6 +78,7 @@ mod tests {
             time: Some(1000),
             name: Some(String::from("Current Temperature")),
             icon: Some(String::from(ICON)),
+            zone: Some(2),
         };
 
         let component = temperature.convert().unwrap();

@@ -1,5 +1,6 @@
+use libc::{c_char, statvfs};
 use serde::Deserialize;
-use sysinfo::{Disks, System};
+use std::ffi::CString;
 
 use crate::{component::section::Component, configuration::device::Converter};
 
@@ -18,18 +19,21 @@ pub struct Disk {
 
 impl Converter for Disk {
     fn convert(&self) -> anyhow::Result<Component> {
-        let mut sys = System::new();
-        sys.refresh_all();
-        let disk = Disks::new_with_refreshed_list();
-        let selected_disk = disk
-            .iter()
-            .find(|d| d.mount_point().to_str() == Some(self.unit.as_deref().unwrap_or(UNIT)))
-            .ok_or_else(|| anyhow::anyhow!(format!("Disk: Not a valid unit {:?}", self.unit)))?;
+        let c_path =
+            CString::new(self.unit.as_deref().unwrap_or(UNIT)).map_err(anyhow::Error::msg)?;
 
-        let total_space = selected_disk.total_space() as f64;
-        let total = (total_space - selected_disk.available_space() as f64) / total_space * 100.0;
+        let mut stat: statvfs = unsafe { std::mem::zeroed() };
+        let ret = unsafe { statvfs(c_path.as_ptr() as *const c_char, &mut stat) };
 
-        let total = format!("{:.0}%", total);
+        let total = if ret != 0 {
+            anyhow::bail!("Invalid Unit");
+        } else {
+            let total = stat.f_blocks * stat.f_frsize;
+            let available = stat.f_bavail * stat.f_frsize;
+            let used = total.saturating_sub(available);
+            format!("{:.0}%", used * 100 / total)
+        };
+
         let name = self.name.as_deref().unwrap_or(NAME);
         let icon = self.icon.as_deref().unwrap_or(ICON);
 
@@ -59,7 +63,6 @@ impl Default for Disk {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sysinfo::System;
 
     #[test]
     fn test_disk_get_time() {
@@ -104,10 +107,6 @@ mod tests {
 
     #[test]
     fn test_disk_convert_with_invalid_unit() {
-        let mut sys = System::new_all();
-
-        sys.refresh_all();
-
         let disk = Disk {
             time: Some(2000),
             name: Some(String::from("Invalid Disk")),

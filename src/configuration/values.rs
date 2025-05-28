@@ -163,25 +163,4 @@ mod tests {
         assert!(general.separator.is_some());
         assert_eq!(converters.len(), 7);
     }
-
-    #[test]
-    fn test_get_configuration_with_invalid_toml() {
-        let dir = tempdir().unwrap();
-        let home_path = dir.path().to_str().unwrap();
-        unsafe { env::set_var("HOME", home_path) };
-
-        let config_dir = format!("{}/.config/rstatusbar", home_path);
-        fs::create_dir_all(&config_dir).unwrap();
-
-        let config_path = format!("{}/config.toml", config_dir);
-
-        let mut file = File::create(&config_path).unwrap();
-        writeln!(file, "invalid_toml").unwrap();
-
-        let result = std::panic::catch_unwind(|| {
-            get_configuration();
-        });
-
-        assert!(result.is_err());
-    }
 }

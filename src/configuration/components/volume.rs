@@ -1,6 +1,6 @@
 use alsa::{
-    mixer::{SelemChannelId, SelemId},
     Mixer,
+    mixer::{SelemChannelId, SelemId},
 };
 use serde::Deserialize;
 
