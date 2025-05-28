@@ -4,7 +4,7 @@ version = "0.3.0"
 description = "Configurable statusbar for Xorg server using xsetroot"
 authors = ["Javier Orfo <javierorfo@protonmail.com>"]
 license = "MIT"
-edition = "2021"
+edition = "2024"
 repository = "https://github.com/javiorfo/rstatusbar"
 homepage = "https://github.com/javiorfo/rstatusbar#readme"
 keywords = ["statusbar", "xorg", "xsetroot"]
@@ -15,6 +15,5 @@ toml = "0.8.12"
 serde = { version = "1.0.197", features = [ "derive" ] }
 anyhow = { version = "1.0.86", default-features = false }
 alsa = "0.9"
-reqwest = { version = "0.12", features = ["blocking", "rustls-tls"] }
 chrono = "0.4.38"
 tempfile = "3.12.0"

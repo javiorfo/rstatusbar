@@ -138,7 +138,7 @@ mod tests {
 
         let dir = tempdir().unwrap();
         let home_path = dir.path().to_str().unwrap();
-        env::set_var("HOME", home_path);
+        unsafe { env::set_var("HOME", home_path) };
 
         let config_dir = format!("{}/.config/rstatusbar", home_path);
         fs::create_dir_all(&config_dir).unwrap();
@@ -158,7 +158,7 @@ mod tests {
     fn test_get_configuration_with_missing_toml() {
         let dir = tempdir().unwrap();
         let home_path = dir.path().to_str().unwrap();
-        env::set_var("HOME", home_path);
+        unsafe { env::set_var("HOME", home_path) };
         let (general, converters) = get_configuration();
         assert!(general.separator.is_some());
         assert_eq!(converters.len(), 7);
@@ -168,7 +168,7 @@ mod tests {
     fn test_get_configuration_with_invalid_toml() {
         let dir = tempdir().unwrap();
         let home_path = dir.path().to_str().unwrap();
-        env::set_var("HOME", home_path);
+        unsafe { env::set_var("HOME", home_path) };
 
         let config_dir = format!("{}/.config/rstatusbar", home_path);
         fs::create_dir_all(&config_dir).unwrap();

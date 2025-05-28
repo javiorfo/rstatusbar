@@ -1,4 +1,5 @@
-use reqwest::blocking::get;
+use std::{net::{SocketAddr, TcpStream}, time::Duration};
+
 use serde::Deserialize;
 
 use crate::{component::section::Component, configuration::device::Converter};
@@ -7,7 +8,6 @@ const NAME: &str = "NET";
 const ICON_UP: &str = "󰀂 ";
 const ICON_DOWN: &str = "󰯡 ";
 const TIME: u64 = 1000;
-const URL: &str = "https://www.google.com";
 
 #[derive(Deserialize, Debug)]
 pub struct Network {
@@ -19,13 +19,14 @@ pub struct Network {
 
 impl Converter for Network {
     fn convert(&self) -> anyhow::Result<Component> {
-        let icon = match get(URL) {
-            Ok(resp) => {
-                if resp.status().is_success() {
-                    self.icon_up.as_deref().unwrap_or(ICON_UP)
-                } else {
-                    self.icon_down.as_deref().unwrap_or(ICON_DOWN)
-                }
+        let address: SocketAddr = "8.8.8.8:53".parse().expect("Invalid address");
+
+        let timeout = Duration::from_secs(60);
+        let icon = match TcpStream::connect_timeout(&address, timeout) {
+            Ok(stream) => {
+                stream.set_read_timeout(Some(timeout)).map_err(anyhow::Error::msg)?;
+                stream.set_write_timeout(Some(timeout)).map_err(anyhow::Error::msg)?;
+                self.icon_up.as_deref().unwrap_or(ICON_UP)
             }
             Err(_) => self.icon_down.as_deref().unwrap_or(ICON_DOWN),
         };

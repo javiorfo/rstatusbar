@@ -19,18 +19,33 @@ pub enum Device {
 }
 
 impl Device {
-    pub fn apply(&self) -> (anyhow::Result<Component>, u64) {
+    pub fn get(&self) -> anyhow::Result<Component> {
         match self {
-            Device::Battery(d) => (d.convert(), d.time()),
-            Device::Cpu(d) => (d.convert(), d.time()),
-            Device::Date(d) => (d.convert(), d.time()),
-            Device::Disk(d) => (d.convert(), d.time()),
-            Device::Memory(d) => (d.convert(), d.time()),
-            Device::Network(d) => (d.convert(), d.time()),
-            Device::Script(d) => (d.convert(), d.time()),
-            Device::Temperature(d) => (d.convert(), d.time()),
-            Device::Volume(d) => (d.convert(), d.time()),
-            Device::Weather(d) => (d.convert(), d.time()),
+            Device::Battery(d) => d.convert(),
+            Device::Cpu(d) => d.convert(),
+            Device::Date(d) => d.convert(),
+            Device::Disk(d) => d.convert(),
+            Device::Memory(d) => d.convert(),
+            Device::Network(d) => d.convert(),
+            Device::Script(d) => d.convert(),
+            Device::Temperature(d) => d.convert(),
+            Device::Volume(d) => d.convert(),
+            Device::Weather(d) => d.convert(),
+        }
+    }
+
+    pub fn time(&self) -> u64 {
+        match self {
+            Device::Battery(d) => d.time(),
+            Device::Cpu(d) => d.time(),
+            Device::Date(d) => d.time(),
+            Device::Disk(d) => d.time(),
+            Device::Memory(d) => d.time(),
+            Device::Network(d) => d.time(),
+            Device::Script(d) => d.time(),
+            Device::Temperature(d) => d.time(),
+            Device::Volume(d) => d.time(),
+            Device::Weather(d) => d.time(),
         }
     }
 }
