@@ -140,12 +140,12 @@ mod tests {
         let home_path = dir.path().to_str().unwrap();
         unsafe { env::set_var("HOME", home_path) };
 
-        let config_dir = format!("{}/.config/rstatusbar", home_path);
+        let config_dir = format!("{home_path}/.config/rstatusbar");
         fs::create_dir_all(&config_dir).unwrap();
 
-        let config_path = format!("{}/config.toml", config_dir);
+        let config_path = format!("{config_dir}/config.toml");
         let mut file = File::create(&config_path).unwrap();
-        writeln!(file, "{}", config_content).unwrap();
+        writeln!(file, "{config_content}").unwrap();
 
         let (general, converters) = get_configuration();
 

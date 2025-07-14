@@ -40,15 +40,14 @@ fn create_grouped_component(devices: Vec<(Arc<Mutex<String>>, Device)>, time: u6
                 let component = device.get();
                 match component {
                     Ok(comp) => {
-                        let result = format!("{}", comp);
                         if let Ok(mut lock) = cache.lock() {
-                            *lock = result;
+                            *lock = comp.to_string();
                         } else {
                             eprintln!("Grouped component lock error");
                         }
                     }
                     Err(e) => {
-                        eprintln!("Grouped converter error: {}", e);
+                        eprintln!("Grouped converter error: {e}");
                     }
                 }
             }
@@ -71,7 +70,7 @@ fn create_statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
                     }
                 }
                 Err(e) => {
-                    eprintln!("Statusbar lock error: {}", e);
+                    eprintln!("Statusbar lock error: {e}");
                     continue;
                 }
             }
@@ -97,7 +96,7 @@ fn create_statusbar(general: General, list: Vec<Arc<Mutex<String>>>) {
                     }
                 }
                 Err(e) => {
-                    eprintln!("Xsetroot error: {}, string: {}", e, xsetroot);
+                    eprintln!("Xsetroot error: {e}, string: {xsetroot}");
                     break;
                 }
             }

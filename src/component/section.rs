@@ -12,7 +12,7 @@ impl Display for Component<'_> {
         let name_str = get_final_string(self.name);
 
         if self.value.is_empty() {
-            write!(f, " {}{}", icon_str, name_str)
+            write!(f, " {icon_str}{name_str}")
         } else {
             write!(f, " {}{}{} ", icon_str, name_str, self.value)
         }

@@ -23,7 +23,7 @@ pub struct Cpu {
 impl Converter for Cpu {
     fn convert(&self) -> anyhow::Result<Component> {
         let total = match calculate_cpu_usage() {
-            Some(usage) => format!("{:.0}%", usage),
+            Some(usage) => format!("{usage:.0}%"),
             None => "-".to_string(),
         };
 

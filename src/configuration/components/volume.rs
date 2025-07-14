@@ -47,7 +47,7 @@ impl Converter for Volume {
                 / (volume_range.1 - volume_range.0) as f64)
                 * 100.0;
 
-            format!("{:.0}%", volume_percentage)
+            format!("{volume_percentage:.0}%")
         } else {
             String::from(MUTED)
         };

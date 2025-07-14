@@ -57,7 +57,7 @@ impl Converter for Memory {
         Ok(Component {
             name,
             icon,
-            value: format!("{:.0}%", total),
+            value: format!("{total:.0}%"),
         })
     }
 

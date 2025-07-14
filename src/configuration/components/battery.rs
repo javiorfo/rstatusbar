@@ -31,7 +31,7 @@ impl Converter for Battery {
             .parse()
             .map_err(anyhow::Error::msg)?;
 
-        let total = format!("{}%", battery_percentage);
+        let total = format!("{battery_percentage}%");
 
         let name = self.name.as_deref().unwrap_or(NAME);
 
