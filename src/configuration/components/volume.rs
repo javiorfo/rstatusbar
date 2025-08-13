@@ -21,7 +21,7 @@ pub struct Volume {
 }
 
 impl Converter for Volume {
-    fn convert(&self) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component<'_>> {
         let mixer = Mixer::new("default", false).map_err(anyhow::Error::msg)?;
 
         let selem_id = SelemId::new("Master", 0);

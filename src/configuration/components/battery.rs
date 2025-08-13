@@ -22,7 +22,7 @@ pub struct Battery {
 }
 
 impl Converter for Battery {
-    fn convert(&self) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component<'_>> {
         let battery_percentage = fs::read_to_string(self.path.clone().unwrap_or(PATH.to_string()))
             .map_err(anyhow::Error::msg)?;
 

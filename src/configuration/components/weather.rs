@@ -17,7 +17,7 @@ pub struct Weather {
 }
 
 impl Converter for Weather {
-    fn convert(&self) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component<'_>> {
         let name = self.name.as_deref().unwrap_or(NAME);
         let icon = self.icon.as_deref().unwrap_or(ICON);
 

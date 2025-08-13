@@ -15,7 +15,7 @@ pub struct Date {
 }
 
 impl Converter for Date {
-    fn convert(&self) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component<'_>> {
         let date_time = Local::now();
         let formatted = format!(
             "{}",

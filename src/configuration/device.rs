@@ -19,7 +19,7 @@ pub enum Device {
 }
 
 impl Device {
-    pub fn get(&self) -> anyhow::Result<Component> {
+    pub fn get(&self) -> anyhow::Result<Component<'_>> {
         match self {
             Device::Battery(d) => d.convert(),
             Device::Cpu(d) => d.convert(),
@@ -51,6 +51,6 @@ impl Device {
 }
 
 pub trait Converter: Send {
-    fn convert(&self) -> anyhow::Result<Component>;
+    fn convert(&self) -> anyhow::Result<Component<'_>>;
     fn time(&self) -> u64;
 }

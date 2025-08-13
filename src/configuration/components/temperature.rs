@@ -18,7 +18,7 @@ pub struct Temperature {
 }
 
 impl Converter for Temperature {
-    fn convert(&self) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component<'_>> {
         let path = PathBuf::from(format!(
             "/sys/class/thermal/thermal_zone{}/temp",
             self.zone.unwrap_or(ZONE)

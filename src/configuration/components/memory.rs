@@ -19,7 +19,7 @@ pub struct Memory {
 }
 
 impl Converter for Memory {
-    fn convert(&self) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component<'_>> {
         let file = File::open("/proc/meminfo").map_err(anyhow::Error::msg)?;
         let reader = BufReader::new(file);
 

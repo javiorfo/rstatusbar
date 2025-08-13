@@ -21,7 +21,7 @@ pub struct Network {
 }
 
 impl Converter for Network {
-    fn convert(&self) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component<'_>> {
         let address: SocketAddr = "8.8.8.8:53".parse().expect("Invalid address");
 
         let timeout = Duration::from_secs(60);

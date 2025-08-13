@@ -18,7 +18,7 @@ pub struct Disk {
 }
 
 impl Converter for Disk {
-    fn convert(&self) -> anyhow::Result<Component> {
+    fn convert(&self) -> anyhow::Result<Component<'_>> {
         let c_path =
             CString::new(self.unit.as_deref().unwrap_or(UNIT)).map_err(anyhow::Error::msg)?;
 
